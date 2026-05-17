@@ -1,0 +1,863 @@
+{"1029_Pride_And_Prejudice_Disk_One": {
+    "Sence 1: Embroidery workspace.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.00.03.585-00.00.04.991"
+    ],
+    "Sence 2: Open countryside field.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.00.54.016-00.00.58.468"
+    ],
+    "Sence 3: Open countryside field with a distant manor house.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.01.03.260-00.01.06.246",
+        "1029_Pride_And_Prejudice_Disk_One_00.01.24.294-00.01.35.181"
+    ],
+    "Sence 4: Open countryside field.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.01.38.203-00.01.44.340",
+        "1029_Pride_And_Prejudice_Disk_One_00.01.50.357-00.01.54.764",
+        "1029_Pride_And_Prejudice_Disk_One_00.01.54.764-00.02.00.654",
+        "1029_Pride_And_Prejudice_Disk_One_00.02.00.654-00.02.09.222",
+        "1029_Pride_And_Prejudice_Disk_One_00.02.10.528-00.02.24.486",
+        "1029_Pride_And_Prejudice_Disk_One_00.02.24.486-00.02.26.853"
+    ],
+    "Sence 5: Country estate pathway.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.02.27.353-00.02.38.334"
+    ],
+    "Sence 6: Estate library interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.02.42.594-00.02.46.580",
+        "1029_Pride_And_Prejudice_Disk_One_00.02.46.790-00.02.53.080"
+    ],
+    "Sence 7: Drawing room interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.03.08.091-00.03.09.083",
+        "1029_Pride_And_Prejudice_Disk_One_00.03.09.147-00.03.13.147"
+    ],
+    "Sence 8: Church exterior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.03.24.390-00.03.29.491",
+        "1029_Pride_And_Prejudice_Disk_One_00.03.29.491-00.03.31.760",
+        "1029_Pride_And_Prejudice_Disk_One_00.03.31.760-00.03.36.555"
+    ],
+    "Sence 9: Manor entrance and interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.05.14.092-00.05.17.236",
+        "1029_Pride_And_Prejudice_Disk_One_00.05.19.771-00.05.23.669"
+    ],
+    "Sence 10: Manor interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.06.51.355-00.06.52.106",
+        "1029_Pride_And_Prejudice_Disk_One_00.07.09.066-00.07.10.844",
+        "1029_Pride_And_Prejudice_Disk_One_00.07.15.518-00.07.20.120",
+        "1029_Pride_And_Prejudice_Disk_One_00.07.20.204-00.07.25.139",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.11.680-00.09.15.154",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.15.297-00.09.19.199",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.38.578-00.09.41.448",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.41.448-00.09.49.573",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.49.573-00.09.53.574",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.53.762-00.09.59.650",
+        "1029_Pride_And_Prejudice_Disk_One_00.09.59.754-00.10.06.019"
+    ],
+    "Sence 11: Bedroom interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.10.06.519-00.10.13.312",
+        "1029_Pride_And_Prejudice_Disk_One_00.10.13.312-00.10.18.151",
+        "1029_Pride_And_Prejudice_Disk_One_00.10.18.340-00.10.22.003"
+    ],
+    "Sence 12: Village street at night.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.12.15.276-00.12.23.205",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.28.879-00.12.32.835",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.32.835-00.12.36.073",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.36.229-00.12.38.445",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.38.446-00.12.40.684",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.40.840-00.12.42.708",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.48.215-00.12.50.996",
+        "1029_Pride_And_Prejudice_Disk_One_00.12.51.620-00.12.54.827"
+    ],
+    "Sence 13: Ballroom interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.12.55.327-00.13.05.002",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.05.262-00.13.07.742",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.10.226-00.13.14.893",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.15.226-00.13.20.963",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.26.226-00.13.31.893",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.32.226-00.13.36.759",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.46.226-00.13.50.893",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.51.226-00.13.57.044",
+        "1029_Pride_And_Prejudice_Disk_One_00.13.57.264-00.14.00.926",
+        "1029_Pride_And_Prejudice_Disk_One_00.14.15.636-00.14.22.824",
+        "1029_Pride_And_Prejudice_Disk_One_00.14.44.392-00.14.47.914",
+        "1029_Pride_And_Prejudice_Disk_One_00.15.32.187-00.15.33.605",
+        "1029_Pride_And_Prejudice_Disk_One_00.16.43.340-00.16.46.724",
+        "1029_Pride_And_Prejudice_Disk_One_00.17.32.874-00.17.35.018",
+        "1029_Pride_And_Prejudice_Disk_One_00.17.37.518-00.17.42.576",
+        "1029_Pride_And_Prejudice_Disk_One_00.17.43.413-00.17.44.690",
+        "1029_Pride_And_Prejudice_Disk_One_00.17.50.874-00.17.57.541",
+        "1029_Pride_And_Prejudice_Disk_One_00.17.57.874-00.18.02.257"
+    ],
+    "Sence 14: Village street at night.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.18.07.874-00.18.13.240",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.13.240-00.18.17.786"
+    ],
+    "Sence 15: Ballroom interior at night.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.18.18.286-00.18.26.075",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.26.847-00.18.31.048",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.37.887-00.18.39.217",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.39.217-00.18.40.088",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.40.088-00.18.41.202",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.41.202-00.18.43.193",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.46.185-00.18.53.063",
+        "1029_Pride_And_Prejudice_Disk_One_00.18.54.185-00.19.01.620",
+        "1029_Pride_And_Prejudice_Disk_One_00.19.01.620-00.19.04.563",
+        "1029_Pride_And_Prejudice_Disk_One_00.19.06.744-00.19.10.922",
+        "1029_Pride_And_Prejudice_Disk_One_00.19.38.469-00.19.44.208",
+        "1029_Pride_And_Prejudice_Disk_One_00.19.48.942-00.19.51.235",
+        "1029_Pride_And_Prejudice_Disk_One_00.20.07.237-00.20.10.835",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.06.021-00.21.07.183",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.07.683-00.21.13.007",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.13.007-00.21.19.633",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.19.633-00.21.28.659",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.28.659-00.21.37.796",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.38.035-00.21.42.761",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.51.014-00.21.56.097",
+        "1029_Pride_And_Prejudice_Disk_One_00.21.56.656-00.22.00.784",
+        "1029_Pride_And_Prejudice_Disk_One_00.22.00.884-00.22.02.778",
+        "1029_Pride_And_Prejudice_Disk_One_00.22.10.959-00.22.16.585",
+        "1029_Pride_And_Prejudice_Disk_One_00.22.17.085-00.22.18.511"
+    ],
+    "Sence 16: Garden exterior during the day.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.26.29.043-00.26.33.555"
+    ],
+    "Sence 17: Interior room with patterned wallpaper.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.26.37.980-00.26.42.643",
+        "1029_Pride_And_Prejudice_Disk_One_00.27.06.214-00.27.13.234",
+        "1029_Pride_And_Prejudice_Disk_One_00.27.33.475-00.27.34.897",
+        "1029_Pride_And_Prejudice_Disk_One_00.28.25.879-00.28.27.957",
+        "1029_Pride_And_Prejudice_Disk_One_00.28.39.142-00.28.44.506",
+        "1029_Pride_And_Prejudice_Disk_One_00.29.38.530-00.29.40.233",
+        "1029_Pride_And_Prejudice_Disk_One_00.30.02.064-00.30.04.583",
+        "1029_Pride_And_Prejudice_Disk_One_00.30.04.928-00.30.06.707",
+        "1029_Pride_And_Prejudice_Disk_One_00.30.15.244-00.30.21.015",
+        "1029_Pride_And_Prejudice_Disk_One_00.31.24.407-00.31.27.247",
+        "1029_Pride_And_Prejudice_Disk_One_00.32.00.647-00.32.02.552"
+    ],
+    "Sence 18: Interior room with patterned wallpaper and curtains.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.32.08.138-00.32.12.185",
+        "1029_Pride_And_Prejudice_Disk_One_00.33.05.548-00.33.09.272",
+        "1029_Pride_And_Prejudice_Disk_One_00.33.10.272-00.33.14.979"
+    ],
+    "Sence 19: Interior room with patterned wallpaper.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.33.51.269-00.33.52.729",
+        "1029_Pride_And_Prejudice_Disk_One_00.33.59.130-00.34.05.754",
+        "1029_Pride_And_Prejudice_Disk_One_00.34.06.780-00.34.07.883",
+        "1029_Pride_And_Prejudice_Disk_One_00.35.02.383-00.35.05.462"
+    ],
+    "Sence 20: Exterior countryside with trees.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.35.07.041-00.35.11.206",
+        "1029_Pride_And_Prejudice_Disk_One_00.35.11.206-00.35.13.330"
+    ],
+    "Sence 21: Interior drawing room with fireplace.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.35.15.405-00.35.20.894"
+    ],
+    "Sence 22: Interior by a window with rain outside.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.35.26.894-00.35.28.789"
+    ],
+    "Sence 23: Exterior in a field with overcast sky.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.35.32.968-00.35.36.609"
+    ],
+    "Sence 24: Interior dining room with candlelight.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.35.37.109-00.35.42.113",
+        "1029_Pride_And_Prejudice_Disk_One_00.36.01.600-00.36.03.988",
+        "1029_Pride_And_Prejudice_Disk_One_00.36.23.010-00.36.25.042"
+    ],
+    "Sence 25: Interior dining room during the day.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.36.32.542-00.36.34.846"
+    ],
+    "Sence 26: Exterior courtyard with a horse.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.37.52.846-00.37.54.479",
+        "1029_Pride_And_Prejudice_Disk_One_00.37.54.979-00.38.01.790",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.03.852-00.38.07.863"
+    ],
+    "Sence 27: Open countryside field.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.38.09.013-00.38.12.282",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.13.638-00.38.21.033",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.21.094-00.38.21.512",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.21.686-00.38.22.397",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.22.553-00.38.26.102",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.33.094-00.38.36.761",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.37.094-00.38.41.251",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.41.518-00.38.44.842"
+    ],
+    "Sence 28: Manor house garden.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.38.45.039-00.38.47.603",
+        "1029_Pride_And_Prejudice_Disk_One_00.38.48.692-00.38.51.343",
+        "1029_Pride_And_Prejudice_Disk_One_00.39.01.475-00.39.03.551",
+        "1029_Pride_And_Prejudice_Disk_One_00.39.05.669-00.39.15.239"
+    ],
+    "Sence 29: Manor house bedroom.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.39.20.155-00.39.23.773",
+        "1029_Pride_And_Prejudice_Disk_One_00.39.23.773-00.39.26.479",
+        "1029_Pride_And_Prejudice_Disk_One_00.39.26.479-00.39.28.542",
+        "1029_Pride_And_Prejudice_Disk_One_00.39.28.715-00.39.33.121",
+        "1029_Pride_And_Prejudice_Disk_One_00.39.33.140-00.39.34.633"
+    ],
+    "Sence 30: Manor house drawing room.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.40.35.705-00.40.36.782",
+        "1029_Pride_And_Prejudice_Disk_One_00.41.02.848-00.41.10.694",
+        "1029_Pride_And_Prejudice_Disk_One_00.41.10.856-00.41.12.887"
+    ],
+    "Sence 31: Countryside field.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.41.35.887-00.41.38.012"
+    ],
+    "Sence 32: Elegant room interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.41.41.066-00.41.43.766",
+        "1029_Pride_And_Prejudice_Disk_One_00.41.44.766-00.41.47.983"
+    ],
+    "Sence 33: Bedroom interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.41.48.213-00.41.53.525",
+        "1029_Pride_And_Prejudice_Disk_One_00.41.53.694-00.41.58.003"
+    ],
+    "Sence 34: Open field at dusk.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.41.58.503-00.42.02.910"
+    ],
+    "Sence 35: Interior room with a mirror.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.42.12.332-00.42.14.000",
+        "1029_Pride_And_Prejudice_Disk_One_00.42.14.000-00.42.15.319"
+    ],
+    "Sence 36: Interior room with a bed.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.42.44.772-00.42.48.024"
+    ],
+    "Sence 37: Interior staircase.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.42.49.166-00.42.52.492",
+        "1029_Pride_And_Prejudice_Disk_One_00.42.52.492-00.42.56.167",
+        "1029_Pride_And_Prejudice_Disk_One_00.42.56.764-00.43.00.817",
+        "1029_Pride_And_Prejudice_Disk_One_00.43.01.936-00.43.10.337",
+        "1029_Pride_And_Prejudice_Disk_One_00.43.10.337-00.43.15.605",
+        "1029_Pride_And_Prejudice_Disk_One_00.43.15.605-00.43.17.636"
+    ],
+    "Sence 38: Billiard room.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.43.20.136-00.43.22.492",
+        "1029_Pride_And_Prejudice_Disk_One_00.43.23.485-00.43.27.420",
+        "1029_Pride_And_Prejudice_Disk_One_00.43.28.556-00.43.33.825"
+    ],
+    "Sence 39: Drawing room.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.43.34.325-00.43.37.843",
+        "1029_Pride_And_Prejudice_Disk_One_00.43.45.508-00.43.50.335",
+        "1029_Pride_And_Prejudice_Disk_One_00.44.04.505-00.44.06.388",
+        "1029_Pride_And_Prejudice_Disk_One_00.44.28.153-00.44.31.176",
+        "1029_Pride_And_Prejudice_Disk_One_00.44.33.676-00.44.36.578",
+        "1029_Pride_And_Prejudice_Disk_One_00.45.37.578-00.45.40.195",
+        "1029_Pride_And_Prejudice_Disk_One_00.46.07.195-00.46.10.177"
+    ],
+    "Sence 40: Outdoor carriage ride.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.46.13.177-00.46.17.538"
+    ],
+    "Sence 41: Arrival at a large estate": [
+        "1029_Pride_And_Prejudice_Disk_One_00.46.17.664-00.46.25.331"
+    ],
+    "Sence 42: Inside a large estate.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.46.39.275-00.46.42.489",
+        "1029_Pride_And_Prejudice_Disk_One_00.47.37.989-00.47.44.445",
+        "1029_Pride_And_Prejudice_Disk_One_00.47.58.445-00.47.59.591",
+        "1029_Pride_And_Prejudice_Disk_One_00.48.22.091-00.48.24.263",
+        "1029_Pride_And_Prejudice_Disk_One_00.48.43.263-00.48.45.173",
+        "1029_Pride_And_Prejudice_Disk_One_00.48.54.173-00.48.56.585",
+        "1029_Pride_And_Prejudice_Disk_One_00.48.57.539-00.49.02.114",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.02.114-00.49.10.635",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.11.135-00.49.16.470",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.16.970-00.49.18.636"
+    ],
+    "Sence 43: Estate garden.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.49.25.958-00.49.26.792",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.27.729-00.49.34.292"
+    ],
+    "Sence 44: Indoor bathroom.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.49.36.792-00.49.42.458",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.43.670-00.49.46.447",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.46.532-00.49.49.860",
+        "1029_Pride_And_Prejudice_Disk_One_00.49.49.861-00.49.53.711"
+    ],
+    "Sence 45: Outdoor garden.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.49.53.860-00.49.59.045"
+    ],
+    "Sence 46: Indoor room.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.50.00.545-00.50.05.519",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.06.019-00.50.08.544",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.12.785-00.50.14.128",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.14.128-00.50.18.542",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.18.542-00.50.20.045",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.23.045-00.50.27.805",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.27.805-00.50.29.635",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.29.635-00.50.32.987",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.36.487-00.50.45.561",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.52.745-00.50.55.085",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.55.255-00.50.57.043",
+        "1029_Pride_And_Prejudice_Disk_One_00.50.57.185-00.51.04.721",
+        "1029_Pride_And_Prejudice_Disk_One_00.52.02.527-00.52.06.877",
+        "1029_Pride_And_Prejudice_Disk_One_00.52.57.466-00.52.59.088",
+        "1029_Pride_And_Prejudice_Disk_One_00.53.00.588-00.53.04.431"
+    ],
+    "Sence 47: Outdoor setting with horse-drawn carriage.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.53.10.505-00.53.12.372"
+    ],
+    "Sence 48: Indoor setting with conversation through a window.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.53.23.517-00.53.25.094",
+        "1029_Pride_And_Prejudice_Disk_One_00.53.29.094-00.53.31.465",
+        "1029_Pride_And_Prejudice_Disk_One_00.53.34.965-00.53.37.958"
+    ],
+    "Sence 49: Indoor setting with a view of the countryside.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.53.41.549-00.53.45.269"
+    ],
+    "Sence 50: Indoor setting with ornate decor.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.54.02.349-00.54.06.505"
+    ],
+    "Sence 51: Outdoor setting with carriage.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.54.13.216-00.54.15.379",
+        "1029_Pride_And_Prejudice_Disk_One_00.54.20.879-00.54.24.240"
+    ],
+    "Sence 52: Indoor setting with embroidery.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.55.45.240-00.55.48.859"
+    ],
+    "Sence 53: Outdoor setting with trees and open field.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.56.33.251-00.56.34.918",
+        "1029_Pride_And_Prejudice_Disk_One_00.56.38.298-00.56.40.965",
+        "1029_Pride_And_Prejudice_Disk_One_00.56.41.298-00.56.47.163"
+    ],
+    "Sence 54: Indoor setting with curtains and a window.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.56.56.163-00.56.58.607"
+    ],
+    "Sence 55: Indoor dining room with a table set for a meal.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.57.26.014-00.57.27.015"
+    ],
+    "Sence 56: Outdoor church entrance.": [
+        "1029_Pride_And_Prejudice_Disk_One_00.58.44.356-00.58.48.525"
+    ],
+    "Sence 57: Horse-drawn carriage near a church.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.00.22.335-01.00.28.232"
+    ],
+    "Sence 58: Outside a building with women in period clothing.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.00.31.479-01.00.37.203"
+    ],
+    "Sence 59: Outside a building with period elements.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.00.43.115-01.00.44.782"
+    ],
+    "Sence 60: Inside a dining room with period elements.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.00.45.017-01.00.47.468",
+        "1029_Pride_And_Prejudice_Disk_One_01.01.31.290-01.01.32.988",
+        "1029_Pride_And_Prejudice_Disk_One_01.02.32.344-01.02.33.808",
+        "1029_Pride_And_Prejudice_Disk_One_01.02.54.111-01.02.57.134"
+    ],
+    "Sence 61: Outdoor garden with period elements.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.03.02.404-01.03.05.785",
+        "1029_Pride_And_Prejudice_Disk_One_01.03.17.183-01.03.23.068",
+        "1029_Pride_And_Prejudice_Disk_One_01.03.44.659-01.03.45.689",
+        "1029_Pride_And_Prejudice_Disk_One_01.03.46.189-01.03.49.641",
+        "1029_Pride_And_Prejudice_Disk_One_01.03.49.781-01.03.51.730",
+        "1029_Pride_And_Prejudice_Disk_One_01.03.51.870-01.03.56.354",
+        "1029_Pride_And_Prejudice_Disk_One_01.04.10.366-01.04.14.485",
+        "1029_Pride_And_Prejudice_Disk_One_01.04.18.114-01.04.20.883"
+    ],
+    "Sence 62: Stone bridge over a river.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.04.23.174-01.04.43.223",
+        "1029_Pride_And_Prejudice_Disk_One_01.05.03.450-01.05.05.117"
+    ],
+    "Sence 63: Village street with period architecture.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.05.07.603-01.05.20.850",
+        "1029_Pride_And_Prejudice_Disk_One_01.05.20.850-01.05.27.984",
+        "1029_Pride_And_Prejudice_Disk_One_01.06.02.023-01.06.06.169",
+        "1029_Pride_And_Prejudice_Disk_One_01.06.59.469-01.07.02.990",
+        "1029_Pride_And_Prejudice_Disk_One_01.07.06.075-01.07.10.058",
+        "1029_Pride_And_Prejudice_Disk_One_01.07.10.169-01.07.11.975"
+    ],
+    "Sence 64: Close-up of period architecture.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.07.18.170-01.07.20.624",
+        "1029_Pride_And_Prejudice_Disk_One_01.07.20.624-01.07.23.538",
+        "1029_Pride_And_Prejudice_Disk_One_01.07.27.825-01.07.30.294"
+    ],
+    "Sence 65: Period village street.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.07.30.294-01.07.38.023"
+    ],
+    "Sence 66: Period interior room.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.07.43.128-01.07.47.989",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.03.901-01.09.06.358",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.08.182-01.09.09.891",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.09.892-01.09.13.880",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.13.892-01.09.15.982",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.16.482-01.09.23.671",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.30.111-01.09.32.314",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.34.814-01.09.38.481",
+        "1029_Pride_And_Prejudice_Disk_One_01.09.41.680-01.09.49.151",
+        "1029_Pride_And_Prejudice_Disk_One_01.11.32.773-01.11.35.981",
+        "1029_Pride_And_Prejudice_Disk_One_01.12.37.053-01.12.39.717",
+        "1029_Pride_And_Prejudice_Disk_One_01.13.35.051-01.13.38.871",
+        "1029_Pride_And_Prejudice_Disk_One_01.13.38.871-01.13.42.393",
+        "1029_Pride_And_Prejudice_Disk_One_01.13.47.154-01.13.50.094"
+    ],
+    "Sence 67: Period bedroom with vanity.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.13.51.168-01.13.53.651",
+        "1029_Pride_And_Prejudice_Disk_One_01.14.15.820-01.14.17.964",
+        "1029_Pride_And_Prejudice_Disk_One_01.15.07.121-01.15.10.194"
+    ],
+    "Sence 68: Period dining room with cabinet.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.15.38.676-01.15.40.640",
+        "1029_Pride_And_Prejudice_Disk_One_01.16.09.706-01.16.12.248"
+    ],
+    "Sence 69: Manor house garden with trees.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.16.24.859-01.16.30.715",
+        "1029_Pride_And_Prejudice_Disk_One_01.17.17.655-01.17.23.200",
+        "1029_Pride_And_Prejudice_Disk_One_01.17.34.682-01.17.38.029",
+        "1029_Pride_And_Prejudice_Disk_One_01.18.26.883-01.18.28.412",
+        "1029_Pride_And_Prejudice_Disk_One_01.19.01.339-01.19.06.059",
+        "1029_Pride_And_Prejudice_Disk_One_01.19.06.059-01.19.10.495",
+        "1029_Pride_And_Prejudice_Disk_One_01.19.28.690-01.19.31.863"
+    ],
+    "Sence 70: Bedroom with fireplace and canopy bed.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.19.34.364-01.19.37.264",
+        "1029_Pride_And_Prejudice_Disk_One_01.19.37.379-01.19.41.027",
+        "1029_Pride_And_Prejudice_Disk_One_01.19.56.621-01.19.58.736",
+        "1029_Pride_And_Prejudice_Disk_One_01.20.34.190-01.20.36.008"
+    ],
+    "Sence 71: Hallway with candle sconces.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.20.36.008-01.20.38.997",
+        "1029_Pride_And_Prejudice_Disk_One_01.20.40.334-01.20.43.273",
+        "1029_Pride_And_Prejudice_Disk_One_01.20.43.273-01.20.46.195",
+        "1029_Pride_And_Prejudice_Disk_One_01.20.47.900-01.20.53.092",
+        "1029_Pride_And_Prejudice_Disk_One_01.20.59.733-01.21.06.536"
+    ],
+    "Sence 72: Mansion exterior at night with carriages.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.21.07.342-01.21.12.296",
+        "1029_Pride_And_Prejudice_Disk_One_01.21.14.408-01.21.19.570",
+        "1029_Pride_And_Prejudice_Disk_One_01.21.20.070-01.21.26.393",
+        "1029_Pride_And_Prejudice_Disk_One_01.21.30.408-01.21.33.151"
+    ],
+    "Sence 73: Mansion interior at night, looking out window.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.21.33.151-01.21.36.588"
+    ],
+    "Sence 74: Mansion exterior at night, with carriages and people arriving.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.21.40.207-01.21.49.994"
+    ],
+    "Sence 75: Mansion interior during a social gathering.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.21.49.994-01.21.58.914",
+        "1029_Pride_And_Prejudice_Disk_One_01.22.28.848-01.22.37.162",
+        "1029_Pride_And_Prejudice_Disk_One_01.22.38.886-01.22.41.531",
+        "1029_Pride_And_Prejudice_Disk_One_01.22.41.942-01.22.47.472"
+    ],
+    "Sence 76: Mansion interior with musicians performing.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.22.47.972-01.22.53.536"
+    ],
+    "Sence 77: Mansion interior with guests socializing.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.22.53.966-01.23.00.304",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.00.502-01.23.08.354",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.08.355-01.23.13.022",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.13.355-01.23.22.854",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.24.756-01.23.25.534",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.25.534-01.23.32.128",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.32.128-01.23.36.071",
+        "1029_Pride_And_Prejudice_Disk_One_01.23.36.071-01.23.41.973",
+        "1029_Pride_And_Prejudice_Disk_One_01.24.03.435-01.24.08.485",
+        "1029_Pride_And_Prejudice_Disk_One_01.24.18.587-01.24.22.956",
+        "1029_Pride_And_Prejudice_Disk_One_01.24.22.956-01.24.28.095",
+        "1029_Pride_And_Prejudice_Disk_One_01.24.29.809-01.24.33.476",
+        "1029_Pride_And_Prejudice_Disk_One_01.24.36.477-01.24.38.634",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.03.302-01.25.08.820",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.16.313-01.25.17.694",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.17.694-01.25.23.046",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.23.717-01.25.25.331",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.27.364-01.25.29.806",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.32.487-01.25.35.032"
+    ],
+    "Sence 78: Mansion interior with musicians playing.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.25.40.744-01.25.42.426"
+    ],
+    "Sence 79: Mansion interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.25.46.415-01.25.48.104",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.49.907-01.25.53.573",
+        "1029_Pride_And_Prejudice_Disk_One_01.25.55.190-01.26.04.364",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.05.612-01.26.09.434",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.20.536-01.26.25.569",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.27.612-01.26.33.069",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.40.947-01.26.43.937",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.43.937-01.26.47.326",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.47.419-01.26.51.412",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.53.968-01.26.55.473",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.55.473-01.26.58.857",
+        "1029_Pride_And_Prejudice_Disk_One_01.26.59.847-01.27.02.854",
+        "1029_Pride_And_Prejudice_Disk_One_01.27.06.396-01.27.08.946",
+        "1029_Pride_And_Prejudice_Disk_One_01.27.18.233-01.27.21.641",
+        "1029_Pride_And_Prejudice_Disk_One_01.27.22.327-01.27.22.993",
+        "1029_Pride_And_Prejudice_Disk_One_01.27.23.327-01.27.24.990",
+        "1029_Pride_And_Prejudice_Disk_One_01.27.34.659-01.27.37.494",
+        "1029_Pride_And_Prejudice_Disk_One_01.27.56.883-01.28.02.701",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.09.737-01.28.15.053",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.17.024-01.28.21.767",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.21.767-01.28.28.161",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.28.161-01.28.31.473",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.32.876-01.28.36.542",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.39.373-01.28.43.039",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.44.232-01.28.47.422",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.49.662-01.28.54.057",
+        "1029_Pride_And_Prejudice_Disk_One_01.28.54.243-01.28.58.889",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.09.001-01.29.16.108",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.21.772-01.29.25.770",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.35.159-01.29.38.611",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.38.611-01.29.40.869",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.45.883-01.29.51.520",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.54.058-01.29.56.971",
+        "1029_Pride_And_Prejudice_Disk_One_01.29.56.971-01.29.58.612",
+        "1029_Pride_And_Prejudice_Disk_One_01.30.08.775-01.30.13.355",
+        "1029_Pride_And_Prejudice_Disk_One_01.30.16.463-01.30.18.963",
+        "1029_Pride_And_Prejudice_Disk_One_01.30.28.963-01.30.30.186",
+        "1029_Pride_And_Prejudice_Disk_One_01.30.30.186-01.30.34.320",
+        "1029_Pride_And_Prejudice_Disk_One_01.30.36.463-01.30.44.912",
+        "1029_Pride_And_Prejudice_Disk_One_01.30.48.124-01.30.58.334",
+        "1029_Pride_And_Prejudice_Disk_One_01.31.03.393-01.31.06.803",
+        "1029_Pride_And_Prejudice_Disk_One_01.31.11.163-01.31.14.320",
+        "1029_Pride_And_Prejudice_Disk_One_01.31.14.320-01.31.18.094",
+        "1029_Pride_And_Prejudice_Disk_One_01.31.23.350-01.31.26.372",
+        "1029_Pride_And_Prejudice_Disk_One_01.31.37.171-01.31.38.393",
+        "1029_Pride_And_Prejudice_Disk_One_01.32.06.908-01.32.10.533",
+        "1029_Pride_And_Prejudice_Disk_One_01.32.22.056-01.32.24.188",
+        "1029_Pride_And_Prejudice_Disk_One_01.32.24.188-01.32.26.217",
+        "1029_Pride_And_Prejudice_Disk_One_01.32.34.578-01.32.35.078",
+        "1029_Pride_And_Prejudice_Disk_One_01.32.55.784-01.33.02.016",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.04.784-01.33.08.450",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.13.882-01.33.18.770",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.21.633-01.33.25.055",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.37.272-01.33.38.938",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.40.709-01.33.43.659"
+    ],
+    "Sence 80: Mansion dining room.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.33.43.823-01.33.45.958",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.45.958-01.33.52.832",
+        "1029_Pride_And_Prejudice_Disk_One_01.33.56.630-01.33.59.787",
+        "1029_Pride_And_Prejudice_Disk_One_01.34.00.450-01.34.05.882",
+        "1029_Pride_And_Prejudice_Disk_One_01.35.04.354-01.35.06.998",
+        "1029_Pride_And_Prejudice_Disk_One_01.35.06.998-01.35.07.664",
+        "1029_Pride_And_Prejudice_Disk_One_01.35.14.629-01.35.16.912",
+        "1029_Pride_And_Prejudice_Disk_One_01.35.16.912-01.35.19.014",
+        "1029_Pride_And_Prejudice_Disk_One_01.35.58.291-01.36.06.701",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.16.583-01.36.22.719",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.31.993-01.36.37.685",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.39.674-01.36.43.844",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.43.953-01.36.46.430",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.46.431-01.36.48.174",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.54.687-01.36.55.305",
+        "1029_Pride_And_Prejudice_Disk_One_01.36.55.305-01.36.58.627",
+        "1029_Pride_And_Prejudice_Disk_One_01.37.35.684-01.37.39.936",
+        "1029_Pride_And_Prejudice_Disk_One_01.37.45.288-01.37.47.902",
+        "1029_Pride_And_Prejudice_Disk_One_01.37.54.677-01.37.56.135",
+        "1029_Pride_And_Prejudice_Disk_One_01.37.57.536-01.37.59.118"
+    ],
+    "Sence 81: Mansion exterior at night.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.38.03.870-01.38.07.847"
+    ],
+    "Sence 82: Mansion interior.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.38.15.538-01.38.18.837",
+        "1029_Pride_And_Prejudice_Disk_One_01.38.34.188-01.38.36.843"
+    ],
+    "Sence 83: Mansion dining room.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.38.37.146-01.38.40.242",
+        "1029_Pride_And_Prejudice_Disk_One_01.38.42.216-01.38.44.299",
+        "1029_Pride_And_Prejudice_Disk_One_01.38.56.483-01.39.01.133",
+        "1029_Pride_And_Prejudice_Disk_One_01.39.18.976-01.39.23.827",
+        "1029_Pride_And_Prejudice_Disk_One_01.39.24.190-01.39.33.653",
+        "1029_Pride_And_Prejudice_Disk_One_01.39.33.823-01.39.37.121",
+        "1029_Pride_And_Prejudice_Disk_One_01.40.07.277-01.40.12.129",
+        "1029_Pride_And_Prejudice_Disk_One_01.40.12.129-01.40.13.556",
+        "1029_Pride_And_Prejudice_Disk_One_01.40.13.754-01.40.15.116",
+        "1029_Pride_And_Prejudice_Disk_One_01.40.20.418-01.40.22.284",
+        "1029_Pride_And_Prejudice_Disk_One_01.40.24.938-01.40.26.422"
+    ],
+    "Sence 84: Mansion hallway.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.41.22.535-01.41.23.261",
+        "1029_Pride_And_Prejudice_Disk_One_01.41.23.510-01.41.26.007",
+        "1029_Pride_And_Prejudice_Disk_One_01.41.26.117-01.41.27.452"
+    ],
+    "Sence 85: Mansion dining room.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.42.08.418-01.42.11.383",
+        "1029_Pride_And_Prejudice_Disk_One_01.42.12.883-01.42.15.748",
+        "1029_Pride_And_Prejudice_Disk_One_01.44.32.007-01.44.34.201",
+        "1029_Pride_And_Prejudice_Disk_One_01.44.36.916-01.44.38.641"
+    ],
+    "Sence 86: Mansion hallway.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.46.10.323-01.46.13.331"
+    ],
+    "Sence 87: Mansion room with fireplace.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.46.27.554-01.46.28.257"
+    ],
+    "Sence 88: Mansion room with window and table.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.47.12.829-01.47.14.567"
+    ],
+    "Sence 89: Mansion room with door and paintings.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.47.24.778-01.47.27.980",
+        "1029_Pride_And_Prejudice_Disk_One_01.47.31.980-01.47.37.295",
+        "1029_Pride_And_Prejudice_Disk_One_01.48.36.295-01.48.39.714"
+    ],
+    "Sence 90: Mansion exterior with columns and doorway.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.48.40.542-01.48.42.878",
+        "1029_Pride_And_Prejudice_Disk_One_01.49.04.378-01.49.05.661",
+        "1029_Pride_And_Prejudice_Disk_One_01.49.28.919-01.49.31.038",
+        "1029_Pride_And_Prejudice_Disk_One_01.49.31.038-01.49.34.146"
+    ],
+    "Sence 91: Interior with fireplace and furniture.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.49.37.100-01.49.38.812",
+        "1029_Pride_And_Prejudice_Disk_One_01.49.55.369-01.49.57.542",
+        "1029_Pride_And_Prejudice_Disk_One_01.50.00.152-01.50.01.809"
+    ],
+    "Sence 92: Close-up of embroidery work.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.51.22.076-01.51.25.072"
+    ],
+    "Sence 93: Country path near a cottage.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.52.09.091-01.52.14.935"
+    ],
+    "Sence 94: Interior with closed double doors.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.52.17.790-01.52.20.168"
+    ],
+    "Sence 95: Interior with window and curtains.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.54.27.134-01.54.28.790"
+    ],
+    "Sence 96: Interior with decorative wall and furniture.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.54.28.890-01.54.30.807",
+        "1029_Pride_And_Prejudice_Disk_One_01.54.46.559-01.54.49.520",
+        "1029_Pride_And_Prejudice_Disk_One_01.54.49.720-01.54.52.343",
+        "1029_Pride_And_Prejudice_Disk_One_01.54.52.519-01.54.57.611"
+    ],
+    "Sence 97: Interior hallway leading to an exterior with a cart.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.55.17.668-01.55.21.717"
+    ],
+    "Sence 98: Exterior village area with timber-framed buildings.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.57.07.187-01.57.10.128",
+        "1029_Pride_And_Prejudice_Disk_One_01.57.47.388-01.57.50.995",
+        "1029_Pride_And_Prejudice_Disk_One_01.57.52.393-01.57.54.192",
+        "1029_Pride_And_Prejudice_Disk_One_01.57.54.493-01.57.55.805",
+        "1029_Pride_And_Prejudice_Disk_One_01.57.55.805-01.58.02.895"
+    ],
+    "Sence 99: Exterior of a country house with columns and greenery.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.59.18.395-01.59.23.642",
+        "1029_Pride_And_Prejudice_Disk_One_01.59.24.134-01.59.28.701",
+        "1029_Pride_And_Prejudice_Disk_One_01.59.30.376-01.59.32.124",
+        "1029_Pride_And_Prejudice_Disk_One_01.59.34.650-01.59.37.156",
+        "1029_Pride_And_Prejudice_Disk_One_01.59.37.156-01.59.41.774"
+    ],
+    "Sence 100: Exterior with soldiers in uniform and greenery.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.59.41.774-01.59.45.773",
+        "1029_Pride_And_Prejudice_Disk_One_01.59.48.606-01.59.51.263"
+    ],
+    "Sence 101: Interior with people in period clothing and a tea setting.": [
+        "1029_Pride_And_Prejudice_Disk_One_01.59.52.882-01.59.55.728",
+        "1029_Pride_And_Prejudice_Disk_One_01.59.56.757-01.59.58.662",
+        "1029_Pride_And_Prejudice_Disk_One_02.00.48.393-02.00.51.245"
+    ],
+    "Sence 102: Interior with people in period clothing.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.02.47.590-02.02.51.001"
+    ],
+    "Sence 103: Interior with period decor.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.02.57.501-02.03.00.128",
+        "1029_Pride_And_Prejudice_Disk_One_02.03.06.179-02.03.13.675",
+        "1029_Pride_And_Prejudice_Disk_One_02.03.29.057-02.03.37.851",
+        "1029_Pride_And_Prejudice_Disk_One_02.04.02.312-02.04.04.665"
+    ],
+    "Sence 104: Exterior with horse-drawn carriage.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.04.19.665-02.04.25.464"
+    ],
+    "Sence 105: Exterior near a house entrance.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.04.35.071-02.04.43.429"
+    ],
+    "Sence 106: Interior in a decorated living room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.05.38.474-02.05.40.130",
+        "1029_Pride_And_Prejudice_Disk_One_02.05.40.130-02.05.42.720",
+        "1029_Pride_And_Prejudice_Disk_One_02.05.46.527-02.05.48.433",
+        "1029_Pride_And_Prejudice_Disk_One_02.05.50.744-02.05.53.492",
+        "1029_Pride_And_Prejudice_Disk_One_02.06.41.992-02.06.44.846",
+        "1029_Pride_And_Prejudice_Disk_One_02.06.44.846-02.06.49.387",
+        "1029_Pride_And_Prejudice_Disk_One_02.07.44.592-02.07.47.543",
+        "1029_Pride_And_Prejudice_Disk_One_02.07.48.569-02.07.50.919",
+        "1029_Pride_And_Prejudice_Disk_One_02.07.51.326-02.07.56.961",
+        "1029_Pride_And_Prejudice_Disk_One_02.07.57.627-02.07.58.127",
+        "1029_Pride_And_Prejudice_Disk_One_02.07.58.565-02.08.01.231",
+        "1029_Pride_And_Prejudice_Disk_One_02.08.25.595-02.08.28.135",
+        "1029_Pride_And_Prejudice_Disk_One_02.08.30.309-02.08.35.695",
+        "1029_Pride_And_Prejudice_Disk_One_02.08.35.886-02.08.52.732",
+        "1029_Pride_And_Prejudice_Disk_One_02.08.52.732-02.08.55.091",
+        "1029_Pride_And_Prejudice_Disk_One_02.08.56.491-02.09.05.877",
+        "1029_Pride_And_Prejudice_Disk_One_02.09.08.907-02.09.12.325",
+        "1029_Pride_And_Prejudice_Disk_One_02.09.12.325-02.09.15.243",
+        "1029_Pride_And_Prejudice_Disk_One_02.09.15.336-02.09.19.282",
+        "1029_Pride_And_Prejudice_Disk_One_02.09.25.396-02.09.30.344",
+        "1029_Pride_And_Prejudice_Disk_One_02.09.33.530-02.09.35.873",
+        "1029_Pride_And_Prejudice_Disk_One_02.10.37.414-02.10.43.053"
+    ],
+    "Sence 107: Exterior of a large, ivy-covered house in winter.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.10.44.553-02.10.49.750"
+    ],
+    "Sence 108: Interior view through a frosted window in winter.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.11.24.250-02.11.27.649"
+    ],
+    "Sence 109: Interior view in an elegant, historic room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.12.25.180-02.12.29.845"
+    ],
+    "Sence 110: Looking out through a frosted window.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.12.29.945-02.12.38.725"
+    ],
+    "Sence 111: Arriving by carriage in front of a brick building.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.12.41.946-02.12.46.287",
+        "1029_Pride_And_Prejudice_Disk_One_02.13.10.978-02.13.18.755",
+        "1029_Pride_And_Prejudice_Disk_One_02.13.20.308-02.13.27.204"
+    ],
+    "Sence 112: Looking out a window.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.13.29.704-02.13.35.597"
+    ],
+    "Sence 113: In a field.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.13.38.272-02.13.42.939",
+        "1029_Pride_And_Prejudice_Disk_One_02.13.46.400-02.13.52.067"
+    ],
+    "Sence 114: Walking by a cottage.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.13.52.400-02.13.58.067",
+        "1029_Pride_And_Prejudice_Disk_One_02.13.58.400-02.14.01.067",
+        "1029_Pride_And_Prejudice_Disk_One_02.14.01.400-02.14.04.067"
+    ],
+    "Sence 115: Outside a cottage": [
+        "1029_Pride_And_Prejudice_Disk_One_02.14.07.537-02.14.09.366"
+    ],
+    "Sence 116: Outside a cottage.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.14.15.336-02.14.17.671",
+        "1029_Pride_And_Prejudice_Disk_One_02.14.45.558-02.14.51.473",
+        "1029_Pride_And_Prejudice_Disk_One_02.15.10.119-02.15.14.245"
+    ],
+    "Sence 117: Inside a study room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.15.39.273-02.15.40.940",
+        "1029_Pride_And_Prejudice_Disk_One_02.15.41.389-02.15.45.929",
+        "1029_Pride_And_Prejudice_Disk_One_02.15.46.029-02.15.48.388",
+        "1029_Pride_And_Prejudice_Disk_One_02.15.48.389-02.15.52.727",
+        "1029_Pride_And_Prejudice_Disk_One_02.16.34.582-02.16.35.857",
+        "1029_Pride_And_Prejudice_Disk_One_02.16.35.957-02.16.38.488",
+        "1029_Pride_And_Prejudice_Disk_One_02.16.43.834-02.16.45.910"
+    ],
+    "Sence 118: Inside a carriage on a country road.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.16.55.410-02.17.01.809"
+    ],
+    "Sence 119: Carriage on a country road.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.17.20.447-02.17.26.028"
+    ],
+    "Sence 120: Carriage arriving at a country estate.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.17.26.528-02.17.32.885",
+        "1029_Pride_And_Prejudice_Disk_One_02.17.32.966-02.17.41.577",
+        "1029_Pride_And_Prejudice_Disk_One_02.18.00.768-02.18.07.775"
+    ],
+    "Sence 121: Inside a country estate.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.18.43.777-02.18.50.528",
+        "1029_Pride_And_Prejudice_Disk_One_02.19.54.560-02.19.55.099",
+        "1029_Pride_And_Prejudice_Disk_One_02.19.55.949-02.20.02.099",
+        "1029_Pride_And_Prejudice_Disk_One_02.21.11.599-02.21.13.901",
+        "1029_Pride_And_Prejudice_Disk_One_02.21.22.753-02.21.35.638"
+    ],
+    "Sence 122: Outside a country estate.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.22.06.736-02.22.11.987"
+    ],
+    "Sence 123: Inside a lavish room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.23.07.987-02.23.09.654",
+        "1029_Pride_And_Prejudice_Disk_One_02.23.10.201-02.23.16.952",
+        "1029_Pride_And_Prejudice_Disk_One_02.24.54.452-02.25.01.335",
+        "1029_Pride_And_Prejudice_Disk_One_02.25.15.335-02.25.18.554"
+    ],
+    "Sence 124: Outside on a garden path.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.25.25.054-02.25.31.600"
+    ],
+    "Sence 125: Inside a decorated room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.26.21.100-02.26.22.805",
+        "1029_Pride_And_Prejudice_Disk_One_02.27.13.532-02.27.21.708",
+        "1029_Pride_And_Prejudice_Disk_One_02.27.25.708-02.27.27.333",
+        "1029_Pride_And_Prejudice_Disk_One_02.27.45.133-02.27.48.385",
+        "1029_Pride_And_Prejudice_Disk_One_02.27.48.541-02.27.50.475",
+        "1029_Pride_And_Prejudice_Disk_One_02.27.51.410-02.27.52.801",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.02.301-02.28.03.707",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.11.448-02.28.13.152",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.13.294-02.28.14.994"
+    ],
+    "Sence 126: Open countryside landscape.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.28.16.850-02.28.21.213",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.21.685-02.28.21.993",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.26.219-02.28.27.683",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.27.683-02.28.31.276",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.31.276-02.28.36.942"
+    ],
+    "Sence 127: Forest pathway.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.28.40.219-02.28.45.205",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.49.219-02.28.54.885",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.55.219-02.28.57.152",
+        "1029_Pride_And_Prejudice_Disk_One_02.28.59.549-02.29.01.049",
+        "1029_Pride_And_Prejudice_Disk_One_02.29.01.049-02.29.06.738",
+        "1029_Pride_And_Prejudice_Disk_One_02.29.07.238-02.29.13.082",
+        "1029_Pride_And_Prejudice_Disk_One_02.29.13.082-02.29.15.897",
+        "1029_Pride_And_Prejudice_Disk_One_02.29.15.897-02.29.21.571"
+    ],
+    "Sence 128: Elegant drawing room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.29.22.071-02.29.28.740",
+        "1029_Pride_And_Prejudice_Disk_One_02.29.38.740-02.29.41.675",
+        "1029_Pride_And_Prejudice_Disk_One_02.29.41.675-02.29.46.152",
+        "1029_Pride_And_Prejudice_Disk_One_02.30.23.695-02.30.29.466",
+        "1029_Pride_And_Prejudice_Disk_One_02.32.22.485-02.32.26.138"
+    ],
+    "Sence 129: Cozy writing room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.32.52.127-02.32.57.863",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.01.063-02.33.02.503",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.02.658-02.33.03.569",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.03.575-02.33.06.273",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.08.329-02.33.09.251",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.09.251-02.33.14.032",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.26.532-02.33.29.305",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.33.577-02.33.41.244",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.41.887-02.33.47.012",
+        "1029_Pride_And_Prejudice_Disk_One_02.33.47.012-02.33.49.215",
+        "1029_Pride_And_Prejudice_Disk_One_02.34.20.067-02.34.21.734",
+        "1029_Pride_And_Prejudice_Disk_One_02.34.22.627-02.34.27.928",
+        "1029_Pride_And_Prejudice_Disk_One_02.35.24.414-02.35.25.038",
+        "1029_Pride_And_Prejudice_Disk_One_02.35.33.587-02.35.36.640",
+        "1029_Pride_And_Prejudice_Disk_One_02.35.37.452-02.35.44.582"
+    ],
+    "Sence 130: Lush green garden.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.35.45.452-02.35.51.014",
+        "1029_Pride_And_Prejudice_Disk_One_02.35.51.014-02.35.54.142",
+        "1029_Pride_And_Prejudice_Disk_One_02.36.05.351-02.36.08.591",
+        "1029_Pride_And_Prejudice_Disk_One_02.36.14.891-02.36.18.642",
+        "1029_Pride_And_Prejudice_Disk_One_02.37.25.192-02.37.30.289",
+        "1029_Pride_And_Prejudice_Disk_One_02.37.42.980-02.37.44.846"
+    ],
+    "Sence 131: Elegant interior room.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.37.48.160-02.37.50.580",
+        "1029_Pride_And_Prejudice_Disk_One_02.38.22.580-02.38.25.152",
+        "1029_Pride_And_Prejudice_Disk_One_02.38.25.352-02.38.28.998",
+        "1029_Pride_And_Prejudice_Disk_One_02.38.31.861-02.38.34.238"
+    ],
+    "Sence 132: Picturesque exterior with ivy-covered house and church.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.38.34.487-02.38.41.873"
+    ],
+    "Sence 133: Cozy interior with fireplace and patterned wallpaper.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.38.42.281-02.38.47.135",
+        "1029_Pride_And_Prejudice_Disk_One_02.38.50.171-02.38.52.313",
+        "1029_Pride_And_Prejudice_Disk_One_02.38.52.567-02.38.58.339"
+    ],
+    "Sence 134: Cozy interior with patterned wallpaper and door.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.39.00.781-02.39.03.313",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.05.942-02.39.08.418",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.15.622-02.39.19.289",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.19.622-02.39.22.485"
+    ],
+    "Sence 135: Cozy interior with patterned wallpaper and table.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.39.23.190-02.39.26.354"
+    ],
+    "Sence 136: Cozy interior with patterned wallpaper and clock.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.39.28.262-02.39.31.929",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.32.262-02.39.36.929",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.42.718-02.39.47.526"
+    ],
+    "Sence 137: Cozy interior with patterned wallpaper.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.39.49.026-02.39.50.929",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.53.144-02.39.57.074",
+        "1029_Pride_And_Prejudice_Disk_One_02.39.57.296-02.39.59.067"
+    ],
+    "Sence 138: Light-filled interior with lace curtains.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.40.14.318-02.40.17.445",
+        "1029_Pride_And_Prejudice_Disk_One_02.41.03.498-02.41.07.210"
+    ],
+    "Sence 139: Ornate interior with patterned wallpaper.": [
+        "1029_Pride_And_Prejudice_Disk_One_02.41.34.736-02.41.36.552",
+        "1029_Pride_And_Prejudice_Disk_One_02.41.36.885-02.41.45.552",
+        "1029_Pride_And_Prejudice_Disk_One_02.41.45.885-02.41.50.571",
+        "1029_Pride_And_Prejudice_Disk_One_02.44.53.711-02.44.55.226",
+        "1029_Pride_And_Prejudice_Disk_One_02.44.55.405-02.45.00.556",
+        "1029_Pride_And_Prejudice_Disk_One_02.45.00.816-02.45.02.240",
+        "1029_Pride_And_Prejudice_Disk_One_02.45.02.430-02.45.12.029"
+    ]
+}
+}

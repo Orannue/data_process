@@ -1,0 +1,228 @@
+{
+  "prompts": [
+    {
+      "global_caption": "[character1] is a young cyberpunk street runner. The scene is set in a rain-soaked urban alleyway at night, with neon reflections shimmering on the wet ground. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a glowing neon cyberpunk leather jacket, standing alone in a rainy alleyway.",
+        "[shot cut] Close-up of [character1]'s face, showing intricate metallic cybernetic implants on the cheek and a hand adjusting the jacket's high glowing collar."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a female astronaut. The scene is set aboard a spaceship, featuring a viewport window and a zero-gravity interior environment. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] in a sleek, white astronaut suit with glowing blue seams, looking thoughtfully out a spaceship window.",
+        "[shot cut] Medium shot of [character1] floating in zero gravity, holding a highly reflective silver space helmet under one arm."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a rugged wasteland survivor. The scene is set in a harsh, dusty wasteland under an oppressive sky. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a tattered, patched trench coat and a makeshift leather gas mask in a dusty wasteland.",
+        "[shot cut] Close-up of [character1]'s dirt-smudged face as they lift their brass goggles onto their forehead, revealing weary eyes."
+      ]
+    },
+    {
+      "global_caption": "[character1] is an advanced humanoid android. The scene is set in a cold, featureless sterile white room. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1]'s face, featuring pristine synthetic skin and a glowing blue LED ring on the temple.",
+        "[shot cut] Medium shot of [character1] wearing a perfectly tailored, minimalist white synthetic uniform, standing still in a sterile white room."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a battle-weary knight. The scene is set in a dense, rain-soaked foggy forest. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] adorned in heavy, intricately engraved silver plate armor, walking slowly through a foggy forest.",
+        "[shot cut] Close-up of [character1] with a fresh scratch across the cheek, rain dripping off the metal visor of the helmet."
+      ]
+    },
+    {
+      "global_caption": "[character1] is an elderly male wizard. The scene is set in a mystical, atmospheric environment. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a deep purple velvet hood, eyes glowing with a faint arcane blue light.",
+        "[shot cut] Medium shot of [character1] wearing a heavily draped wizard's robe embroidered with golden runes, holding an ancient, leather-bound spellbook."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a female elven ranger. The scene is set in a peaceful, sunlit forest glade with dappled light filtering through the trees. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing fitted green leather armor and intricate silver bracers, standing alone in a sunlit glade.",
+        "[shot cut] Close-up of [character1]'s face, showing pointed elven ears poking through braided silver hair."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a classic British detective. The scene is set on a foggy London street drenched in atmospheric mist. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a classic wool fedora and a thick herringbone tweed overcoat in a foggy London street.",
+        "[shot cut] Medium shot of [character1] pulling out an ornate gold pocket watch from the coat's vest, examining the dial closely."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a menacing pirate captain. The scene is set on a wooden ship deck under an open sky. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a weathered crimson velvet captain's coat and a tricorn hat, standing on a ship deck.",
+        "[shot cut] Close-up of [character1]'s face, showing a dark leather eyepatch and gold hoop earrings swinging in the ocean breeze."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a wandering male samurai. The scene evokes a classic Japanese warrior aesthetic. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1]'s intense gaze, showing hair tied in a traditional topknot and a faint scar above the eyebrow.",
+        "[shot cut] Medium shot of [character1] wearing a dark indigo kimono and loose hakama pants, gripping the hilt of a katana."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a majestic Egyptian pharaoh. The scene is set under the blazing harsh desert sun of ancient Egypt. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] draped in fine, pleated white linen adorned with a heavy gold and lapis lazuli chest collar.",
+        "[shot cut] Close-up of [character1] wearing dramatic black eyeliner and a golden uraeus crown catching the harsh desert sun."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a fierce Viking warrior. The scene is set in a brutal, rain-lashed environment. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1]'s face painted with fierce black war stripes, heavy rain washing over a braided beard.",
+        "[shot cut] Medium shot of [character1] wearing a thick wolf-fur mantle over heavy iron chainmail, clutching a weathered wooden shield."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a suave secret agent. The scene is set at a sophisticated casino bar. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] looking sharp in a perfectly fitted black tuxedo with a crisp black bow tie at a casino bar.",
+        "[shot cut] Close-up of [character1] pressing a hidden earpiece, a subtle, confident smirk forming on their lips."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a teenage computer hacker. The scene is set in a dimly lit room dominated by glowing monitor screens. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a dark, oversized hoodie pulled up, green computer screen code reflecting in their wire-rimmed glasses.",
+        "[shot cut] Medium shot of [character1] slumped in a gaming chair, the dark hoodie covered in faint energy drink stains."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a cynical noir detective. The scene is set in moody, noir-lit urban streets with stark chiaroscuro lighting. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a classic beige trench coat with the collar popped up, leaning against a brick wall in noir lighting.",
+        "[shot cut] Close-up of [character1] lighting a cigarette, the match illuminating a tired, stubbled face under a fedora."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a silent stealth operative. The scene is set on a dark urban rooftop at night. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a matte black tactical balaclava, revealing only cold, calculating eyes.",
+        "[shot cut] Medium shot of [character1] in a form-fitting stealth suit equipped with multiple utility pouches, kneeling silently on a dark rooftop."
+      ]
+    },
+    {
+      "global_caption": "[character1] is an elegant female vampire dressed. The scene is set in a dimly lit room filled with flickering candlelight. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] dressed in an opulent Victorian lace blouse with a high ruffled collar, standing in a candlelit room.",
+        "[shot cut] Close-up of [character1]'s pale face, revealing sharp fangs and a single drop of blood on the chin."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a nervous ghost hunter. The scene is set in a dark, eerie paranormal investigation location. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing thick-rimmed glasses and a sweat-stained red bandana, eyes wide with fear.",
+        "[shot cut] Medium shot of [character1] wearing beige ghost-hunting coveralls covered in embroidered patches, holding a glowing EMF reader."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a frantic asylum patient. The scene is set inside a stark, white-padded cell of a psychiatric facility. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a loose, heavily stained canvas straitjacket, standing in the center of a padded cell.",
+        "[shot cut] Close-up of [character1]'s disheveled, matted hair and wild, unblinking eyes staring into the camera."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a sinister cult leader. The scene evokes a dark, ritualistic atmosphere. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a heavy crimson velvet cowl that casts deep, sinister shadows over their face.",
+        "[shot cut] Medium shot of [character1] in flowing crimson cultist robes, holding up an eerie, glowing green amulet."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a passionate male artist. The scene is set in an artist's studio. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a thick denim apron covered in vibrant splashes of oil paint, standing before an easel.",
+        "[shot cut] Close-up of [character1] wearing a tilted dark red French beret, a smudge of blue paint prominent on the cheek."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a rebellious rock musician. The scene has a laid-back, rock-and-roll aesthetic. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] with messy, shoulder-length rockstar hair, wearing dark aviator sunglasses indoors.",
+        "[shot cut] Medium shot of [character1] wearing a studded vintage leather jacket over a ripped band t-shirt, casually holding an acoustic guitar."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a heartbroken runaway bride. The scene is set in a desolate outdoor location during a heavy downpour. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a muddy and torn white silk wedding gown, standing alone in a heavy downpour.",
+        "[shot cut] Close-up of [character1]'s face, dark mascara running down the cheeks, rain dripping from a ruined lace veil."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a meticulous head chef. The scene is set in a professional kitchen environment. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] with hair neatly tied back under a crisp, tall white chef's toque, eyes intensely focused.",
+        "[shot cut] Medium shot of [character1] wearing a spotless double-breasted white chef's jacket, holding a wooden tasting spoon."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a rugged male archaeologist. The scene is set among ancient ruins deep in a lush jungle. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a sweat-stained khaki button-down shirt and a weathered leather satchel in a jungle ruin.",
+        "[shot cut] Close-up of [character1] pushing up the brim of a dusty fedora hat, revealing a sunburned face and a confident grin."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a female deep-sea diver. The scene is set at the water's edge or an aquatic environment. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a tight black neoprene scuba hood, heavy droplets of water clinging to the eyelashes.",
+        "[shot cut] Medium shot of [character1] in the full black wetsuit, unzipping the front slightly while holding a dive mask."
+      ]
+    },
+    {
+      "global_caption": "[character1] is an exhausted mountaineer. The scene is set on a perilous, snow-blasted high-altitude mountain face. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a bulky, bright red mountaineering parka heavily covered in fresh snow.",
+        "[shot cut] Close-up of [character1]'s face, featuring frostbitten red cheeks and thick, heavily frosted glacier goggles."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a vintage female pilot. The scene evokes a golden age of aviation aesthetic. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a vintage brown leather aviator cap with the chin strap hanging loose.",
+        "[shot cut] Medium shot of [character1] wearing a thick shearling-lined bomber jacket and a white silk scarf fluttering wildly in the wind."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a cheerful young barista. The scene is set in a cozy, warmly lit café. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing a dark green canvas barista apron over a plaid flannel shirt, standing behind a wooden counter.",
+        "[shot cut] Close-up of [character1]'s smiling face, a light dusting of cocoa powder visible on their chin."
+      ]
+    },
+    {
+      "global_caption": "[character1] is an elderly female librarian. The scene is set in a quiet, book-lined library or study. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing half-moon reading glasses attached to a delicate gold chain draped around the neck.",
+        "[shot cut] Medium shot of [character1] wearing an oversized, mustard-yellow knitted cardigan, hugging a large stack of antique books."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a tough female mechanic. The scene is set in an industrial garage or workshop. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Medium shot of [character1] wearing dark blue mechanic coveralls tied around the waist, with a grease-stained white tank top underneath.",
+        "[shot cut] Close-up of [character1] wiping dark engine grease off their forehead with the back of a dirty hand."
+      ]
+    },
+    {
+      "global_caption": "[character1] is a young female botanist. The scene is set in a vibrant natural outdoor environment. This scene contains 2 shots.",
+      "prompt": [
+        "[shot cut] Close-up of [character1] wearing a wide-brimmed straw sun hat adorned with dried wildflowers, eyes wide with wonder.",
+        "[shot cut] Medium shot of [character1] wearing a practical linen field shirt and heavy gardening gloves, holding a rare, softly glowing blue plant."
+      ]
+    }
+  ]
+}

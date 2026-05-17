@@ -89,7 +89,7 @@ class TransNetV2:
 
     @staticmethod
     def predictions_to_scenes(predictions: np.ndarray, threshold: float = 0.5):
-        predictions = (predictions > threshold).astype(np.uint8)
+        predictions = (predictions > thres    hold).astype(np.uint8)
 
         scenes = []
         t, t_prev, start = -1, 0, 0
