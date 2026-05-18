@@ -124,7 +124,7 @@ OVERWRITE_EXTRACT=0
 OVERWRITE_OUTPUTS=0
 
 # [可选] 重跑之前失败的电影。失败修复后设 1。
-RETRY_FAILED=0
+RETRY_FAILED=5
 
 # =========================
 # 小规模测试参数
