@@ -293,29 +293,33 @@ def select_samples_for_scene(
     random_pool_size: int,
     empty_shot_probability: float,
     max_shots: int,
-    random_selection_pool_size: int,
     rng: random.Random,
 ) -> List[Dict]:
     selected = []
     seen_keys = set()
+
     pool = list(candidates[: max(1, random_pool_size)])
     rng.shuffle(pool)
+
     for candidate in pool:
         candidate = insert_empty_shot_by_probability(
             candidate=candidate,
             empty_shots=empty_shots,
-             random_pool_size=random_selection_pool_size,
             probability=empty_shot_probability,
             max_shots=max_shots,
             rng=rng,
         )
+
         key = tuple(candidate["shot_paths"])
         if key in seen_keys:
             continue
+
         seen_keys.add(key)
         selected.append(candidate)
+
         if len(selected) >= max_samples:
             break
+
     return selected
 
 

@@ -256,7 +256,7 @@ def build_samples_for_scene(
         candidates=candidates,
         empty_shots=empty_shots,
         max_samples=args.max_samples_per_scene,
-        random_pool_size=args.random_selection_pool_size,
+        random_selection_pool_size=args.random_selection_pool_size,
         empty_shot_probability=args.empty_shot_probability,
         max_shots=args.max_shots,
         rng=rng,
