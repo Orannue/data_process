@@ -30,7 +30,7 @@ EXTRACT_ROOT="data_raw/moviedataset_extracted"
 # [必填] 中间结果目录：shots、characters、samples、cropped_samples、日志都会写这里。
 WORK_ROOT="movie_multishot_work"
 
-# [必填] 最终结果目录：merge/crop/resize 后的视频会写到这里。
+# [可选] 额外最终输出目录。MERGE_IN_PLACE=1 时不会用它保存 merged.mp4。
 FINAL_ROOT="movie_multishot_final"
 
 # [可选] batch 状态文件路径。留空时默认写到 WORK_ROOT/_batch_pipeline_state.json。
@@ -62,7 +62,7 @@ MOVIE_WORKERS=2
 SCENE_WORKERS=4
 
 # [必填] 可用 GPU 列表。脚本会按 MOVIE_WORKERS 自动连续分组。
-DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"  
+DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"
 
 # [可选] 手动指定每个 movie worker 的 GPU 组；例如 "cuda:0,cuda:1;cuda:2,cuda:3"。留空自动分组。
 DEVICE_GROUPS=""
@@ -74,8 +74,11 @@ DEVICE=""
 # 样本处理参数
 # =========================
 
-# [可选] 是否在 build_multishot_samples 阶段写 merged sample video。1 开启，0 关闭。
+# [可选] 是否在 build_multishot_samples 阶段写原始 merged sample video。通常设 0，因为最后还会重新 crop/resize。
 WRITE_VIDEOS=0
+
+# [建议保持默认] merged.mp4 是否写回 sample 的 shot 文件夹。1 表示和 shot_0001.mp4 放一起。
+MERGE_IN_PLACE=1
 
 # [可选] crop_sample_shots 的 latent 帧上限。
 MAX_LATENT_FRAMES=127
@@ -86,7 +89,7 @@ TARGET_WIDTH=832
 # [可选] 最终视频高度。
 TARGET_HEIGHT=480
 
-# [可选] merge 阶段每个 sample 至少需要几个 clip。
+# [可选] merge 阶段每个 sample 至少需要几个 clip。multishot 建议 2。
 MIN_CLIPS=2
 
 # [可选] merge/crop/resize 的 CPU 并行数。每个 movie worker 都会用这个值，别设太夸张。
@@ -134,10 +137,10 @@ RETRY_FAILED=1
 ONLY_MOVIE=""
 
 # [可选] 最多处理几部电影。smoke test 可设 1 或 3；留空表示不限制。
-MAX_MOVIES=3
+MAX_MOVIES=""
 
 # [可选] 最多下载几个 archive。smoke test 可设 1；留空表示不限制。
-MAX_ARCHIVES=3
+MAX_ARCHIVES=""
 
 # =========================
 # 高级透传参数
@@ -223,6 +226,12 @@ fi
 
 if [[ "${WRITE_VIDEOS}" == "1" ]]; then
   cmd+=(--write-videos)
+fi
+
+if [[ "${MERGE_IN_PLACE}" == "1" ]]; then
+  cmd+=(--merge-in-place)
+else
+  cmd+=(--no-merge-in-place)
 fi
 
 if [[ "${SKIP_EXISTING_DOWNLOADS}" == "1" ]]; then

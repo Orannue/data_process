@@ -449,8 +449,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run split, character clustering, and sample building in parallel by scene."
     )
-    parser.add_argument("--scene-json", default=r"F:\dataset\movie\movies_scenes.json")
-    parser.add_argument("--moviebench-root", default=r"F:\dataset\movie\moviebench")
+    parser.add_argument("--scene-json", default=r"movies_scenes.json")
+    parser.add_argument("--moviebench-root", default=r"moviedataset")
     parser.add_argument("--work-root", default=r"H:\dataset\movie_multishot_output")
     parser.add_argument("--only-movie", action="append", default=[])
     parser.add_argument("--overwrite", action="store_true")
@@ -495,22 +495,27 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-shots-per-character",
         type=int,
-        default=2,
+        default=1,
         help=(
-            "Kept for compatibility. Single-shot characters are retained unless "
-            "the whole scene has only one single-shot character."
+            "Deprecated compatibility option; it no longer filters characters. "
+            "Single-shot characters are retained in multi-shot scenes."
         ),
     )
 
-    parser.add_argument("--min-shots", type=int, default=3)
+    parser.add_argument("--min-shots", type=int, default=2)
     parser.add_argument("--max-shots", type=int, default=6)
     parser.add_argument("--max-gap-shots", type=int, default=30)
-    parser.add_argument("--min-character-confidence", type=float, default=0.35)
-    parser.add_argument("--min-score", type=float, default=0.48)
-    parser.add_argument("--max-samples-per-scene", type=int, default=5)
-    parser.add_argument("--random-selection-pool-size",    type=int,    default=10,   help="Randomly select final samples from the top N ranked candidates per scene.")
-    parser.add_argument("--empty-shot-probability", type=float, default=0.0)
-    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--min-character-confidence", type=float, default=0.1)
+    parser.add_argument("--min-score", type=float, default=0.1)
+    parser.add_argument("--max-samples-per-scene", type=int, default=8)
+    parser.add_argument(
+        "--random-selection-pool-size",
+        type=int,
+        default=12,
+        help="Randomly select final samples from the top N ranked candidates per scene.",
+    )
+    parser.add_argument("--empty-shot-probability", type=float, default=0.3)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument(
         "--candidate-strategy",
         choices=["window", "combinations"],

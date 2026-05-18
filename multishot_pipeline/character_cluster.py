@@ -698,10 +698,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-shots-per-character",
         type=int,
-        default=2,
+        default=1,
         help=(
-            "Kept for compatibility. Single-shot characters are retained unless "
-            "the whole scene has only one single-shot character."
+            "Deprecated compatibility option; it no longer filters characters. "
+            "Single-shot characters are retained in multi-shot scenes."
         ),
     )
     parser.add_argument(

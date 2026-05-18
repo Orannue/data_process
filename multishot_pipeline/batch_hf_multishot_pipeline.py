@@ -18,7 +18,8 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 
 HERE = Path(__file__).resolve().parent
-DONE_MOVIE_STATUSES = {"done", "done_no_samples"}
+DONE_MOVIE_STATUSES = {"done"}
+TERMINAL_MOVIE_STATUSES = {"done", "done_no_samples", "done_no_outputs"}
 TRANSIENT_MOVIE_STATUSES = {"queued", "running"}
 TRANSIENT_ARCHIVE_STATUSES = {"downloading", "extracting"}
 PRINT_LOCK = threading.Lock()
@@ -371,20 +372,196 @@ def has_mp4(root: Path) -> bool:
     return root.is_dir() and any(root.rglob("*.mp4"))
 
 
+def read_json_if_exists(path: Path) -> Optional[Any]:
+    if not path.exists():
+        return None
+    return read_json(path)
+
+
+def movie_work_root(args: argparse.Namespace, movie_id: str) -> Path:
+    return args.work_root / "movies" / movie_id
+
+
+def movie_merge_output_root(
+    args: argparse.Namespace, movie_id: str, movie_work: Optional[Path] = None
+) -> Path:
+    if args.merge_in_place:
+        return (movie_work or movie_work_root(args, movie_id)) / "cropped_samples"
+    return args.final_root
+
+
 def movie_has_final_outputs(args: argparse.Namespace, movie_id: str) -> bool:
-    final_movie_root = args.final_root / movie_id
+    final_movie_root = movie_merge_output_root(args, movie_id)
     if not final_movie_root.is_dir():
         return False
     return any(
-        path.is_file() and path.name == "merged.mp4" and path.stat().st_size > 0
+        path.is_file()
+        and path.name == "merged.mp4"
+        and path.stat().st_size > 0
+        and movie_id in path.parts
         for path in final_movie_root.rglob("merged.mp4")
     )
+
+
+def inspect_movie_completion(args: argparse.Namespace, movie_id: str) -> Dict[str, Any]:
+    movie_work = movie_work_root(args, movie_id)
+    merge_output_root = movie_merge_output_root(args, movie_id, movie_work)
+    scene_summary_path = movie_work / "samples" / "summary.json"
+    crop_summary_path = movie_work / "cropped_samples" / "summary.json"
+    merge_report_path = merge_output_root / "merge_crop_resize_report.json"
+    merge_summary_path = merge_output_root / "merge_crop_resize_summary.json"
+
+    scene_summary = read_json_if_exists(scene_summary_path)
+    if scene_summary is None:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Missing scene summary: {scene_summary_path}",
+        }
+
+    failed_scene_count = int(scene_summary.get("failed_scene_count", 0) or 0)
+    if failed_scene_count > 0:
+        return {
+            "terminal": False,
+            "status": "failed",
+            "reason": f"Scene pipeline has {failed_scene_count} failed scenes.",
+            "scene_summary": scene_summary,
+        }
+
+    sample_count = int(scene_summary.get("sample_count", 0) or 0)
+    if sample_count <= 0:
+        return {
+            "terminal": True,
+            "status": "done_no_samples",
+            "reason": "Scene pipeline completed but produced zero samples.",
+            "scene_summary": scene_summary,
+        }
+
+    crop_summary = read_json_if_exists(crop_summary_path)
+    if crop_summary is None:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Missing crop summary: {crop_summary_path}",
+            "scene_summary": scene_summary,
+        }
+
+    cropped_written = int(crop_summary.get("written", 0) or 0)
+    cropped_skipped = int(crop_summary.get("skipped", 0) or 0)
+    cropped_seen = cropped_written + cropped_skipped
+    if cropped_seen < sample_count:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": (
+                f"Crop summary is incomplete: seen={cropped_seen}, "
+                f"scene_samples={sample_count}."
+            ),
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+        }
+    if cropped_written <= 0:
+        return {
+            "terminal": True,
+            "status": "done_no_outputs",
+            "reason": "Crop completed but no sample could be cropped.",
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+        }
+
+    merge_report = read_json_if_exists(merge_report_path)
+    if merge_report is None:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Missing merge report: {merge_report_path}",
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+        }
+    if not isinstance(merge_report, list):
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Merge report is not a list: {merge_report_path}",
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+        }
+    if len(merge_report) < cropped_written:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": (
+                f"Merge report is incomplete: report={len(merge_report)}, "
+                f"cropped={cropped_written}."
+            ),
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+        }
+
+    allowed_statuses = {"ok", "skipped_exists", "skipped_too_few_clips"}
+    bad_rows = []
+    missing_outputs = []
+    output_count = 0
+    for row in merge_report:
+        status = row.get("status")
+        if status not in allowed_statuses:
+            bad_rows.append(row)
+            continue
+        output_path = row.get("output_path")
+        if status in {"ok", "skipped_exists"}:
+            path = Path(output_path) if output_path else None
+            if path is not None and path.exists() and path.stat().st_size > 0:
+                output_count += 1
+            else:
+                missing_outputs.append(row)
+
+    if bad_rows:
+        return {
+            "terminal": False,
+            "status": "failed",
+            "reason": f"Merge report contains {len(bad_rows)} failed/unknown rows.",
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+            "merge_report_path": str(merge_report_path),
+        }
+    if missing_outputs:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Merge report has {len(missing_outputs)} rows with missing outputs.",
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+            "merge_report_path": str(merge_report_path),
+        }
+
+    merge_summary = read_json_if_exists(merge_summary_path) or {}
+    if output_count <= 0:
+        return {
+            "terminal": True,
+            "status": "done_no_outputs",
+            "reason": "Merge completed but all cropped samples were skipped.",
+            "scene_summary": scene_summary,
+            "crop_summary": crop_summary,
+            "merge_summary": merge_summary,
+            "merge_report_path": str(merge_report_path),
+        }
+
+    return {
+        "terminal": True,
+        "status": "done",
+        "reason": "All stages reached terminal state and merged outputs exist.",
+        "scene_summary": scene_summary,
+        "crop_summary": crop_summary,
+        "merge_summary": merge_summary,
+        "merge_report_path": str(merge_report_path),
+        "merged_output_count": output_count,
+    }
 
 
 def check_scene_pipeline_summary(movie_work: Path) -> Dict[str, Any]:
     summary_path = movie_work / "samples" / "summary.json"
     if not summary_path.exists():
-        return {}
+        raise FileNotFoundError(f"Missing scene summary: {summary_path}")
     summary = read_json(summary_path)
     failed_count = int(summary.get("failed_scene_count", 0) or 0)
     if failed_count > 0:
@@ -480,8 +657,8 @@ def process_movie(
     moviebench_root: Path,
     device_group: Optional[str],
 ) -> Dict[str, Any]:
-    movie_work = args.work_root / "movies" / movie_id
-    final_movie_root = args.final_root / movie_id
+    movie_work = movie_work_root(args, movie_id)
+    merge_output_root = movie_merge_output_root(args, movie_id, movie_work)
     logs_dir = movie_work / "_logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
     started_at = now_iso()
@@ -489,7 +666,7 @@ def process_movie(
         "movie_id": movie_id,
         "moviebench_root": str(moviebench_root),
         "movie_work": str(movie_work),
-        "final_root": str(final_movie_root),
+        "merge_output_root": str(merge_output_root),
         "device_group": device_group,
         "scene_workers": scene_workers_for_group(args, device_group),
         "started_at": started_at,
@@ -516,30 +693,37 @@ def process_movie(
             stream=args.stream_subprocess_output,
         )
 
-        cropped_root = movie_work / "cropped_samples"
-        if not has_mp4(cropped_root):
+        completion = inspect_movie_completion(args, movie_id)
+        if completion["terminal"] and completion["status"] in {
+            "done_no_samples",
+            "done_no_outputs",
+        }:
             result = {
                 **marker_base,
-                "status": "done_no_samples",
+                "status": completion["status"],
                 "finished_at": now_iso(),
-                "reason": "No cropped sample mp4 files were produced.",
-                "scene_summary": scene_summary,
+                "reason": completion["reason"],
+                "completion": completion,
             }
             write_movie_marker(movie_work, result)
             return result
 
         run_logged(
-            build_merge_cmd(args, movie_work, final_movie_root),
+            build_merge_cmd(args, movie_work, merge_output_root),
             log_path=logs_dir / "03_merge_crop_resize.log",
             step=f"{movie_id}:merge_resize",
             stream=args.stream_subprocess_output,
         )
 
+        completion = inspect_movie_completion(args, movie_id)
+        if not completion["terminal"]:
+            raise RuntimeError(f"Incomplete movie output: {completion['reason']}")
+
         result = {
             **marker_base,
-            "status": "done",
+            "status": completion["status"],
             "finished_at": now_iso(),
-            "scene_summary": scene_summary,
+            "completion": completion,
         }
         write_movie_marker(movie_work, result)
         return result
@@ -572,8 +756,12 @@ def should_submit_movie(
     status = state.movies.get(movie_id, {}).get("status")
     if args.overwrite:
         return True
-    if status in DONE_MOVIE_STATUSES:
-        return False
+    if status in TERMINAL_MOVIE_STATUSES:
+        completion = inspect_movie_completion(args, movie_id)
+        if completion["terminal"]:
+            return False
+        log(f"[movie requeue] {movie_id}: terminal state is stale: {completion['reason']}")
+        return True
     if status == "failed" and not args.retry_failed:
         return False
     return True
@@ -817,8 +1005,8 @@ def main() -> int:
                     movie_fields.pop("movie_id", None)
                     state.update_movie(movie_id, **movie_fields)
                     status = result.get("status")
-                    if status in DONE_MOVIE_STATUSES:
-                        log(f"[movie done] {movie_id}: {status}")
+                    if status in TERMINAL_MOVIE_STATUSES:
+                        log(f"[movie terminal] {movie_id}: {status}")
                     else:
                         log(f"[movie failed] {movie_id}: {result.get('error')}")
 
@@ -835,11 +1023,15 @@ def main() -> int:
         process_executor.shutdown(wait=True)
 
     total_done = sum(
-        1 for row in state.movies.values() if row.get("status") in DONE_MOVIE_STATUSES
+        1 for row in state.movies.values() if row.get("status") == "done"
+    )
+    total_terminal = sum(
+        1 for row in state.movies.values() if row.get("status") in TERMINAL_MOVIE_STATUSES
     )
     total_failed = sum(1 for row in state.movies.values() if row.get("status") == "failed")
     log(
-        f"[done] movies_done={total_done}, movies_failed={total_failed}, "
+        f"[done] movies_done={total_done}, movies_terminal={total_terminal}, "
+        f"movies_failed={total_failed}, "
         f"state={state.path}"
     )
     return 0
@@ -942,6 +1134,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target-height", type=int, default=480)
     parser.add_argument("--min-clips", type=int, default=1)
     parser.add_argument("--merge-jobs", type=int, default=max(1, min(4, os.cpu_count() or 1)))
+    parser.add_argument(
+        "--merge-in-place",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "Write merged.mp4 into each cropped sample folder beside shot_*.mp4. "
+            "Use --no-merge-in-place to write merged outputs under --final-root."
+        ),
+    )
     parser.add_argument("--pipeline-extra-args", default=None)
     parser.add_argument("--crop-extra-args", default=None)
     parser.add_argument("--merge-extra-args", default=None)
