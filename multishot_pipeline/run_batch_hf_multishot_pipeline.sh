@@ -59,7 +59,7 @@ EXTRACT_WORKERS=2
 MOVIE_WORKERS=2
 
 # [可选] 每部电影内部同时处理几个 scene。留空时自动等于该电影分到的 GPU 数。
-SCENE_WORKERS=""
+SCENE_WORKERS=4
 
 # [必填] 可用 GPU 列表。脚本会按 MOVIE_WORKERS 自动连续分组。
 DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"
