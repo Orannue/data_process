@@ -787,7 +787,9 @@ def main() -> int:
                             "finished_at": now_iso(),
                             "error": repr(exc),
                         }
-                    state.update_movie(movie_id, **result)
+                    movie_fields = dict(result)
+                    movie_fields.pop("movie_id", None)
+                    state.update_movie(movie_id, **movie_fields)
                     status = result.get("status")
                     if status in DONE_MOVIE_STATUSES:
                         log(f"[movie done] {movie_id}: {status}")
