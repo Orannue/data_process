@@ -35,7 +35,7 @@ def get_random_credentials():
     """随机选择一组账号密码"""
     accounts = [
         (USERNAME1, PASSWORD1),
-        (USERNAME2, PASSWORD2)
+       
     ]
     return random.choice(accounts)
 
