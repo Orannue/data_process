@@ -371,6 +371,29 @@ def has_mp4(root: Path) -> bool:
     return root.is_dir() and any(root.rglob("*.mp4"))
 
 
+def movie_has_final_outputs(args: argparse.Namespace, movie_id: str) -> bool:
+    final_movie_root = args.final_root / movie_id
+    if not final_movie_root.is_dir():
+        return False
+    return any(
+        path.is_file() and path.name == "merged.mp4" and path.stat().st_size > 0
+        for path in final_movie_root.rglob("merged.mp4")
+    )
+
+
+def check_scene_pipeline_summary(movie_work: Path) -> Dict[str, Any]:
+    summary_path = movie_work / "samples" / "summary.json"
+    if not summary_path.exists():
+        return {}
+    summary = read_json(summary_path)
+    failed_count = int(summary.get("failed_scene_count", 0) or 0)
+    if failed_count > 0:
+        raise RuntimeError(
+            f"Scene pipeline had {failed_count} failed scenes. See {summary_path}"
+        )
+    return summary
+
+
 def write_movie_marker(movie_work: Path, data: Dict[str, Any]) -> None:
     write_json(movie_work / "_movie_pipeline_status.json", data)
 
@@ -480,6 +503,7 @@ def process_movie(
             step=f"{movie_id}:scene_pipeline",
             stream=args.stream_subprocess_output,
         )
+        scene_summary = check_scene_pipeline_summary(movie_work)
 
         samples_manifest = movie_work / "samples" / "samples.jsonl"
         if not samples_manifest.exists():
@@ -499,6 +523,7 @@ def process_movie(
                 "status": "done_no_samples",
                 "finished_at": now_iso(),
                 "reason": "No cropped sample mp4 files were produced.",
+                "scene_summary": scene_summary,
             }
             write_movie_marker(movie_work, result)
             return result
@@ -514,6 +539,7 @@ def process_movie(
             **marker_base,
             "status": "done",
             "finished_at": now_iso(),
+            "scene_summary": scene_summary,
         }
         write_movie_marker(movie_work, result)
         return result
