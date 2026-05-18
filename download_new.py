@@ -9,7 +9,7 @@ import random
 
 # ================= 配置区域 =================
 LINKS_FILE = "movie.txt"
-OUTPUT_DIR = r"F:\dataset\movie\moviebench"
+OUTPUT_DIR = r"moviebench"
 
 # 1. 代理设置 (非常重要！如果你在中国，请务必填写)
 # 格式示例: "http://127.0.0.1:7890" (查看你的VPN软件设置端口)
