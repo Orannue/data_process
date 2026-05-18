@@ -23,6 +23,12 @@ def parse_args():
     parser.add_argument("--skip-characters", action="store_true")
     parser.add_argument("--skip-samples", action="store_true")
     parser.add_argument("--write-videos", action="store_true")
+    parser.add_argument(
+        "--scene-workers",
+        type=int,
+        default=1,
+        help="Use parallel scene splitting when greater than 1.",
+    )
     return parser.parse_args()
 
 
@@ -39,16 +45,27 @@ def main():
     overwrite = ["--overwrite"] if args.overwrite else []
 
     if not args.skip_split:
+        split_script = (
+            "split_scene_shots_parallel.py"
+            if args.scene_workers and args.scene_workers > 1
+            else "split_scene_shots.py"
+        )
+        scene_worker_args = (
+            ["--scene-workers", str(args.scene_workers)]
+            if args.scene_workers and args.scene_workers > 1
+            else []
+        )
         run(
             [
                 sys.executable,
-                str(HERE / "split_scene_shots.py"),
+                str(HERE / split_script),
                 "--scene-json",
                 args.scene_json,
                 "--moviebench-root",
                 args.moviebench_root,
                 "--output-root",
                 str(shots_root),
+                *scene_worker_args,
                 *only_args,
                 *overwrite,
             ]
@@ -87,4 +104,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

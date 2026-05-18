@@ -10,6 +10,7 @@ import numpy as np
 
 
 VIDEO_EXTS = {".mp4", ".avi", ".mov", ".mkv", ".webm", ".m4v"}
+TEMP_VIDEO_PREFIXES = ("_tmp", "temp")
 
 
 def read_json(path: Path):
@@ -269,5 +270,10 @@ def iter_scene_dirs(root: Path) -> Iterator[Tuple[Path, Path]]:
 
 
 def list_videos(path: Path) -> List[Path]:
-    return sorted(p for p in path.iterdir() if p.is_file() and p.suffix.lower() in VIDEO_EXTS)
-
+    return sorted(
+        p
+        for p in path.iterdir()
+        if p.is_file()
+        and p.suffix.lower() in VIDEO_EXTS
+        and not p.name.lower().startswith(TEMP_VIDEO_PREFIXES)
+    )

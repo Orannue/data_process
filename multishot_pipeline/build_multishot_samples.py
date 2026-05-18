@@ -274,12 +274,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-root", default=r"H:\dataset\movie_multishot_output\samples")
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--write-videos", action="store_true")
-    parser.add_argument("--min-shots", type=int, default=2)
-    parser.add_argument("--max-shots", type=int, default=5)
-    parser.add_argument("--max-gap-shots", type=int, default=3)
+    parser.add_argument("--min-shots", type=int, default=3)
+    parser.add_argument("--max-shots", type=int, default=6)
+    parser.add_argument("--max-gap-shots", type=int, default=30)
     parser.add_argument("--min-character-confidence", type=float, default=0.35)
     parser.add_argument("--min-score", type=float, default=0.48)
-    parser.add_argument("--max-samples-per-scene", type=int, default=12)
+    parser.add_argument("--max-samples-per-scene", type=int, default=5)
     return parser.parse_args()
 
 

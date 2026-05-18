@@ -1,5 +1,7 @@
 import argparse
+import gc
 import os
+import time
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
 
@@ -85,11 +87,10 @@ def detect_segments_via_temp_file(
     finally:
         if video is not None and hasattr(video, "release"):
             video.release()
+        video = None
+        gc.collect()
         if temp_path.exists():
-            try:
-                temp_path.unlink()
-            except OSError:
-                pass
+            unlink_with_retries(temp_path)
 
     if not scene_list:
         return [[0, len(frames) - 1]]
@@ -100,6 +101,36 @@ def detect_segments_via_temp_file(
         if e >= s:
             segments.append([s, e])
     return segments or [[0, len(frames) - 1]]
+
+
+def unlink_with_retries(path: Path, attempts: int = 5, delay: float = 0.2) -> bool:
+    for attempt in range(attempts):
+        try:
+            path.unlink()
+            return True
+        except FileNotFoundError:
+            return True
+        except OSError:
+            if attempt == attempts - 1:
+                return False
+            gc.collect()
+            time.sleep(delay)
+    return False
+
+
+def cleanup_temp_videos(scene_dir: Path) -> int:
+    if not scene_dir.exists():
+        return 0
+    removed = 0
+    for path in scene_dir.iterdir():
+        if (
+            path.is_file()
+            and path.suffix.lower() in {".mp4", ".avi", ".mov", ".mkv", ".webm", ".m4v"}
+            and path.name.lower().startswith(("_tmp", "temp"))
+        ):
+            if unlink_with_retries(path):
+                removed += 1
+    return removed
 
 
 def detect_segments_by_frame_diff(
@@ -247,6 +278,10 @@ def process_scene(
     scene_manifest_path = scene_output_dir / "scene_manifest.json"
 
     if scene_manifest_path.exists() and not args.overwrite:
+        if args.clean_temp:
+            removed = cleanup_temp_videos(scene_output_dir)
+            if removed:
+                print(f"  [clean] {movie_id}/{scene_id}: removed temp videos={removed}")
         return []
 
     sorted_names = sort_clip_names(clip_names)
@@ -257,6 +292,7 @@ def process_scene(
         return []
 
     scene_output_dir.mkdir(parents=True, exist_ok=True)
+    cleanup_temp_videos(scene_output_dir)
     all_frames = []
     clip_level_segments: List[List[int]] = []
     seam_starts = []
@@ -329,21 +365,39 @@ def process_scene(
         seam_support_seconds=args.seam_support_seconds,
         seam_diff_threshold=args.seam_diff_threshold,
     )
-    shot_segments = merge_short_segments(
-        shot_segments, max(2, int(round(fps * args.min_shot_seconds)))
-    )
+    if args.merge_short_seconds > 0:
+        shot_segments = merge_short_segments(
+            shot_segments, max(2, int(round(fps * args.merge_short_seconds)))
+        )
 
     rows = []
-    for shot_idx, (start, end) in enumerate(shot_segments, start=1):
-        shot_frames = all_frames[start : end + 1]
-        if not shot_frames:
+    skipped_short = 0
+    skipped_trimmed_empty = 0
+    for raw_shot_idx, (start, end) in enumerate(shot_segments, start=1):
+        trimmed_start = int(start) + max(0, int(args.trim_head_frames))
+        trimmed_end = int(end) - max(0, int(args.trim_tail_frames))
+        if trimmed_end < trimmed_start:
+            skipped_trimmed_empty += 1
             continue
+
+        duration = (trimmed_end - trimmed_start + 1) / fps
+        if duration <= args.min_shot_seconds:
+            skipped_short += 1
+            continue
+
+        shot_frames = all_frames[trimmed_start : trimmed_end + 1]
+        if not shot_frames:
+            skipped_trimmed_empty += 1
+            continue
+        shot_idx = len(rows) + 1
         shot_id = f"shot_{shot_idx:04d}"
-        filename = f"{shot_id}_{format_seconds(start / fps)}-{format_seconds(end / fps)}.mp4"
+        filename = (
+            f"{shot_id}_{format_seconds(trimmed_start / fps)}-"
+            f"{format_seconds(trimmed_end / fps)}.mp4"
+        )
         shot_path = scene_output_dir / filename
         if args.overwrite or not shot_path.exists():
             save_segment_video(shot_path, shot_frames, fps)
-        duration = (end - start + 1) / fps
         rows.append(
             {
                 "movie_id": movie_id,
@@ -352,15 +406,27 @@ def process_scene(
                 "scene_desc": scene_desc,
                 "shot_id": shot_id,
                 "shot_index": shot_idx,
+                "raw_shot_index": raw_shot_idx,
                 "path": str(shot_path),
                 "fps": fps,
-                "start_frame": start,
-                "end_frame": end,
-                "start_seconds": start / fps,
-                "end_seconds": end / fps,
+                "raw_start_frame": int(start),
+                "raw_end_frame": int(end),
+                "start_frame": trimmed_start,
+                "end_frame": trimmed_end,
+                "start_seconds": trimmed_start / fps,
+                "end_seconds": trimmed_end / fps,
                 "duration": duration,
+                "trim_head_frames": max(0, int(args.trim_head_frames)),
+                "trim_tail_frames": max(0, int(args.trim_tail_frames)),
                 "sample_key": stable_id(movie_id, scene_id, shot_id),
             }
+        )
+
+    if skipped_short or skipped_trimmed_empty:
+        print(
+            f"  [filter] {movie_id}/{scene_id}: "
+            f"short<={args.min_shot_seconds:.3f}s={skipped_short}, "
+            f"empty_after_trim={skipped_trimmed_empty}"
         )
 
     write_json(
@@ -374,9 +440,16 @@ def process_scene(
             "stitched_frame_count": len(all_frames),
             "source_clips": source_clips,
             "shot_count": len(rows),
+            "raw_shot_count": len(shot_segments),
+            "skipped_short_count": skipped_short,
+            "skipped_trimmed_empty_count": skipped_trimmed_empty,
+            "trim_head_frames": max(0, int(args.trim_head_frames)),
+            "trim_tail_frames": max(0, int(args.trim_tail_frames)),
+            "min_shot_seconds": args.min_shot_seconds,
             "shots": rows,
         },
     )
+    cleanup_temp_videos(scene_output_dir)
     return rows
 
 
@@ -432,11 +505,40 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--only-movie", action="append", default=[])
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--reverse", action="store_true")
+    parser.add_argument(
+        "--clean-temp",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Remove _tmp/temp videos from scene output directories.",
+    )
     parser.add_argument("--clip-content-threshold", type=float, default=25.5)
     parser.add_argument("--scene-content-threshold", type=float, default=27.5)
     parser.add_argument("--adaptive-threshold", type=float, default=2.5)
     parser.add_argument("--min-detect-seconds", type=float, default=0.12)
-    parser.add_argument("--min-shot-seconds", type=float, default=0.6)
+    parser.add_argument(
+        "--min-shot-seconds",
+        type=float,
+        default=1.0,
+        help="Drop shots with trimmed duration <= this many seconds.",
+    )
+    parser.add_argument(
+        "--merge-short-seconds",
+        type=float,
+        default=0.0,
+        help="Optional pre-filter merge threshold. Default 0 means do not merge short shots.",
+    )
+    parser.add_argument(
+        "--trim-head-frames",
+        type=int,
+        default=3,
+        help="Frames removed from the beginning of every detected shot before saving.",
+    )
+    parser.add_argument(
+        "--trim-tail-frames",
+        type=int,
+        default=3,
+        help="Frames removed from the end of every detected shot before saving.",
+    )
     parser.add_argument("--seam-support-seconds", type=float, default=0.3)
     parser.add_argument("--seam-diff-threshold", type=float, default=5.0)
     parser.add_argument("--refine-search-radius-frames", type=int, default=3)

@@ -23,6 +23,8 @@ metadata for the downstream character and merge stages.
    - input: MovieBench clips plus `movies_scenes.json`
    - output: `movie/scene/shot_*.mp4`
    - metadata: `shots/_manifests/shots.jsonl` and per-scene `scene_manifest.json`
+   - by default trims 3 frames from the head and 6 frames from the tail of each
+     detected shot before saving, then drops shots with trimmed duration `<= 1s`
 
 2. `character_cluster.py`
    - samples frames from each shot
@@ -48,6 +50,9 @@ python H:\dataset\multishot_pipeline\split_scene_shots.py `
   --moviebench-root F:\dataset\movie\moviebench `
   --output-root H:\dataset\movie_multishot_output\shots
 ```
+
+Use `--trim-head-frames 3 --trim-tail-frames 3` if you want to remove exactly
+three frames from both ends instead of the default total of nine frames.
 
 Cluster characters:
 
@@ -91,4 +96,3 @@ python H:\dataset\multishot_pipeline\run_pipeline.py `
   but do not look like a coherent multishot scene.
 - The default output root is `H:\dataset\movie_multishot_output`, so it will not
   overwrite your current `H:\dataset\movie_shot`.
-
