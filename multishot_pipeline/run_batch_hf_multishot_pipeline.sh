@@ -56,13 +56,13 @@ DOWNLOAD_WORKERS=2
 EXTRACT_WORKERS=2
 
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
-MOVIE_WORKERS=2
+MOVIE_WORKERS=1
 
 # [可选] 每部电影内部同时处理几个 scene。留空时自动等于该电影分到的 GPU 数。
 SCENE_WORKERS=2
 
 # [必填] 可用 GPU 列表。脚本会按 MOVIE_WORKERS 自动连续分组。
-DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"
+DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"  
 
 # [可选] 手动指定每个 movie worker 的 GPU 组；例如 "cuda:0,cuda:1;cuda:2,cuda:3"。留空自动分组。
 DEVICE_GROUPS=""
