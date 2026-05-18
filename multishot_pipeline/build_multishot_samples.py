@@ -293,6 +293,7 @@ def select_samples_for_scene(
     random_pool_size: int,
     empty_shot_probability: float,
     max_shots: int,
+    random_selection_pool_size: int,
     rng: random.Random,
 ) -> List[Dict]:
     selected = []
@@ -303,6 +304,7 @@ def select_samples_for_scene(
         candidate = insert_empty_shot_by_probability(
             candidate=candidate,
             empty_shots=empty_shots,
+             random_pool_size=random_selection_pool_size,
             probability=empty_shot_probability,
             max_shots=max_shots,
             rng=rng,
