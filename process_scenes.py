@@ -282,7 +282,7 @@ def process_movie_scenes(json_data, moviebench_path, output_base_path, model):
                 cap = cv2.VideoCapture(video_path)
                 frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
                 cap.release()
-                sub_video_frame_counts.append(frame_count)r
+                sub_video_frame_counts.append(frame_count)
                 cumulative_frame_count += frame_count
                 cumulative_frame_counts.append(cumulative_frame_count)
             
