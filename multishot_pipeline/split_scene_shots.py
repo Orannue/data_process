@@ -426,9 +426,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Split MovieBench scene clips into shot videos and metadata."
     )
-    parser.add_argument("--scene-json", default=r"F:\dataset\movie\movies_scenes.json")
-    parser.add_argument("--moviebench-root", default=r"F:\dataset\movie\moviebench")
-    parser.add_argument("--output-root", default=r"H:\dataset\movie_multishot_output\shots")
+    parser.add_argument("--scene-json", default=r"movies_scenes.json")
+    parser.add_argument("--moviebench-root", default=r"moviedataset")
+    parser.add_argument("--output-root", default=r"shots")
     parser.add_argument("--only-movie", action="append", default=[])
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--reverse", action="store_true")
