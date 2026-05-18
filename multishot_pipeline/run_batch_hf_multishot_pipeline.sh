@@ -50,7 +50,7 @@ SEVENZIP_BIN="${SEVENZIP_BIN:-7z}"
 # =========================
 
 # [可选] 同时下载几个 .7z。网络/磁盘压力大时调小；下载很慢时可调到 2-4。
-DOWNLOAD_WORKERS=4
+DOWNLOAD_WORKERS=2
 
 # [可选] 同时解压几个 .7z。解压吃 CPU/IO，磁盘压力大时建议 1-2。
 EXTRACT_WORKERS=4
