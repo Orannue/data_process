@@ -53,7 +53,7 @@ SEVENZIP_BIN="${SEVENZIP_BIN:-7z}"
 DOWNLOAD_WORKERS=2
 
 # [可选] 同时解压几个 .7z。解压吃 CPU/IO，磁盘压力大时建议 1-2。
-EXTRACT_WORKERS=4
+EXTRACT_WORKERS=2
 
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
 MOVIE_WORKERS=2
