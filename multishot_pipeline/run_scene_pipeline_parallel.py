@@ -256,6 +256,7 @@ def build_samples_for_scene(
         candidates=candidates,
         empty_shots=empty_shots,
         max_samples=args.max_samples_per_scene,
+        random_pool_size=args.random_selection_pool_size,
         empty_shot_probability=args.empty_shot_probability,
         max_shots=args.max_shots,
         rng=rng,
@@ -507,6 +508,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-character-confidence", type=float, default=0.35)
     parser.add_argument("--min-score", type=float, default=0.48)
     parser.add_argument("--max-samples-per-scene", type=int, default=5)
+    parser.add_argument("--random-selection-pool-size",    type=int,    default=10,   help="Randomly select final samples from the top N ranked candidates per scene.")
     parser.add_argument("--empty-shot-probability", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument(
