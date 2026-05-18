@@ -134,10 +134,10 @@ RETRY_FAILED=1
 ONLY_MOVIE=""
 
 # [可选] 最多处理几部电影。smoke test 可设 1 或 3；留空表示不限制。
-MAX_MOVIES=1
+MAX_MOVIES=3
 
 # [可选] 最多下载几个 archive。smoke test 可设 1；留空表示不限制。
-MAX_ARCHIVES=1
+MAX_ARCHIVES=3
 
 # =========================
 # 高级透传参数
