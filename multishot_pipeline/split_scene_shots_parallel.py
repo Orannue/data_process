@@ -164,8 +164,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-shot-seconds",
         type=float,
-        default=1.0,
-        help="Drop shots with trimmed duration <= this many seconds.",
+        default=2.0,
+        help="Drop shots with trimmed duration less than this many seconds.",
     )
     parser.add_argument(
         "--merge-short-seconds",

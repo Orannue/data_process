@@ -7,3 +7,8 @@
 .vscode/
 __pycache__/
 *.py[cod]
+model_cache/
+checkpoints/
+data_raw/
+movie_multishot_work/
+movie_multishot_final/

@@ -1,6 +1,7 @@
 import argparse
 import gc
 import os
+import shutil
 import time
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
@@ -131,6 +132,23 @@ def cleanup_temp_videos(scene_dir: Path) -> int:
             if unlink_with_retries(path):
                 removed += 1
     return removed
+
+
+def remove_scene_output_dir(scene_dir: Path, output_root: Path) -> bool:
+    if not scene_dir.exists():
+        return True
+    resolved_scene = scene_dir.resolve()
+    resolved_root = output_root.resolve()
+    try:
+        resolved_scene.relative_to(resolved_root)
+    except ValueError:
+        print(f"  [warn] refused to remove scene outside output root: {resolved_scene}")
+        return False
+    if resolved_scene == resolved_root:
+        print(f"  [warn] refused to remove output root: {resolved_scene}")
+        return False
+    shutil.rmtree(resolved_scene)
+    return True
 
 
 def detect_segments_by_frame_diff(
@@ -381,7 +399,7 @@ def process_scene(
             continue
 
         duration = (trimmed_end - trimmed_start + 1) / fps
-        if duration <= args.min_shot_seconds:
+        if duration < args.min_shot_seconds:
             skipped_short += 1
             continue
 
@@ -425,9 +443,15 @@ def process_scene(
     if skipped_short or skipped_trimmed_empty:
         print(
             f"  [filter] {movie_id}/{scene_id}: "
-            f"short<={args.min_shot_seconds:.3f}s={skipped_short}, "
+            f"short<{args.min_shot_seconds:.3f}s={skipped_short}, "
             f"empty_after_trim={skipped_trimmed_empty}"
         )
+
+    if len(rows) == 1:
+        cleanup_temp_videos(scene_output_dir)
+        if remove_scene_output_dir(scene_output_dir, output_root):
+            print(f"  [drop] {movie_id}/{scene_id}: only one shot; removed scene")
+        return []
 
     write_json(
         scene_manifest_path,
@@ -518,8 +542,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-shot-seconds",
         type=float,
-        default=1.0,
-        help="Drop shots with trimmed duration <= this many seconds.",
+            default=2.0,
+            help="Drop shots with trimmed duration less than this many seconds.",
     )
     parser.add_argument(
         "--merge-short-seconds",

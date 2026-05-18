@@ -2,20 +2,32 @@ import argparse
 import concurrent.futures
 import multiprocessing
 import os
+import random
 from pathlib import Path
 from typing import Dict, List
 
 import cv2
 
-from build_multishot_samples import generate_candidates_for_scene, write_merged_video
+from build_multishot_samples import (
+    generate_candidates_for_scene,
+    insert_empty_shot_by_probability,
+    is_empty_shot,
+    select_samples_for_scene,
+    write_merged_video,
+)
 from character_cluster import (
     FACENET_IMPORT_ERROR,
     InceptionResnetV1,
     MTCNN,
     cluster_scene_detections,
+    configure_torch_model_cache,
     extract_detections_from_shot,
+    get_shot_duration_seconds,
+    existing_scene_has_single_shot,
+    remove_output_scene_dir,
     summarize_clusters,
     torch,
+    write_empty_shot_videos,
 )
 from split_scene_shots import HAVE_SCENEDETECT, process_scene
 from utils import append_jsonl, clean_name, read_json, read_json as load_json, reset_file, stable_id, write_json
@@ -38,7 +50,12 @@ def choose_worker_device(device_arg: str, devices_arg: str) -> str:
     return device_arg or ("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def init_worker(device_arg: str, devices_arg: str, face_model: str) -> None:
+def init_worker(
+    device_arg: str,
+    devices_arg: str,
+    face_model: str,
+    model_cache_dir: str,
+) -> None:
     os.environ.setdefault("OPENCV_VIDEOIO_PRIORITY_MSMF", "0")
     try:
         cv2.setNumThreads(1)
@@ -50,6 +67,7 @@ def init_worker(device_arg: str, devices_arg: str, face_model: str) -> None:
             "The full scene pipeline requires torch, facenet_pytorch, and scikit-learn."
         ) from FACENET_IMPORT_ERROR
 
+    configure_torch_model_cache(model_cache_dir)
     device_name = choose_worker_device(device_arg, devices_arg)
     device = torch.device(device_name)
     if device.type == "cuda":
@@ -118,6 +136,9 @@ def cluster_characters_for_scene(
     out_scene_dir = chars_root / movie_id / scene_id
     scene_json = out_scene_dir / "characters.json"
     if scene_json.exists() and not args.overwrite:
+        if existing_scene_has_single_shot(scene_json):
+            remove_output_scene_dir(out_scene_dir, chars_root)
+            return {"characters": [], "shots": [], "detections": []}
         data = load_json(scene_json)
         return {
             "characters": data.get("characters", []),
@@ -125,9 +146,18 @@ def cluster_characters_for_scene(
             "detections": [],
         }
 
+    valid_scene_rows = [
+        row
+        for row in sorted(scene_rows, key=lambda r: int(r.get("shot_index", 0)))
+        if get_shot_duration_seconds(Path(row["path"])) >= args.min_shot_duration
+    ]
+    if len(valid_scene_rows) <= 1:
+        remove_output_scene_dir(out_scene_dir, chars_root)
+        return {"characters": [], "shots": [], "detections": []}
+
     detections: List[Dict] = []
     shot_stats: Dict[str, Dict] = {}
-    for row in sorted(scene_rows, key=lambda r: int(r.get("shot_index", 0))):
+    for row in valid_scene_rows:
         dets, stats = extract_detections_from_shot(
             shot_row=row,
             mtcnn=WORKER["mtcnn"],
@@ -135,7 +165,8 @@ def cluster_characters_for_scene(
             device=WORKER["device"],
             sample_frames=args.sample_frames,
             min_face=args.min_face,
-            min_prob=args.min_face_prob,
+            max_center_distance=args.max_center_distance,
+            min_core_face_area_ratio=args.min_core_face_area_ratio,
         )
         detections.extend(dets)
         shot_stats[row["shot_id"]] = stats
@@ -144,16 +175,18 @@ def cluster_characters_for_scene(
         detections,
         dbscan_eps=args.dbscan_eps,
         dbscan_min_samples=args.dbscan_min_samples,
+        cluster_max_distance=args.cluster_max_distance,
     )
     characters, shot_to_occurrences = summarize_clusters(
         movie_id=movie_id,
         scene_id=scene_id,
         clusters=clusters,
         min_shots_per_character=args.min_shots_per_character,
+        scene_shot_count=len(valid_scene_rows),
     )
 
     shot_records = []
-    for row in sorted(scene_rows, key=lambda r: int(r.get("shot_index", 0))):
+    for row in valid_scene_rows:
         shot_id = row["shot_id"]
         occ = sorted(
             shot_to_occurrences.get(shot_id, []),
@@ -166,16 +199,27 @@ def cluster_characters_for_scene(
                 "characters": occ,
                 "dominant_character": occ[0]["character_id"] if occ else None,
                 "character_count": len(occ),
+                "is_empty_shot": int(shot_stats.get(shot_id, {}).get("face_detection_count", 0) or 0) == 0,
                 "stats": shot_stats.get(shot_id, {}),
             }
         )
+
+    empty_video_paths = write_empty_shot_videos(
+        shot_records=shot_records,
+        out_scene_dir=out_scene_dir,
+        overwrite=args.overwrite,
+    )
+    for row in shot_records:
+        copied_path = empty_video_paths.get(str(row["shot_id"]))
+        if copied_path:
+            row["empty_shot_video_path"] = copied_path
 
     write_json(
         scene_json,
         {
             "movie_id": movie_id,
             "scene_id": scene_id,
-            "shot_count": len(scene_rows),
+            "shot_count": len(valid_scene_rows),
             "detection_count": len(detections),
             "character_count": len(characters),
             "characters": characters,
@@ -194,15 +238,28 @@ def build_samples_for_scene(
         return []
     movie_id = shot_records[0]["movie_id"]
     scene_id = shot_records[0]["scene_id"]
+    character_shots = [row for row in shot_records if not is_empty_shot(row)]
+    empty_shots = [row for row in shot_records if is_empty_shot(row)]
     candidates = generate_candidates_for_scene(
-        scene_shots=shot_records,
+        scene_shots=character_shots,
         min_shots=args.min_shots,
         max_shots=args.max_shots,
         max_gap_shots=args.max_gap_shots,
         min_conf=args.min_character_confidence,
         min_score=args.min_score,
+        strategy=args.candidate_strategy,
+        max_candidates=args.max_candidate_pool,
+        max_candidate_combinations=args.max_candidate_combinations,
     )
-    selected = candidates[: args.max_samples_per_scene]
+    rng = random.Random(args.seed + int(stable_id(movie_id, scene_id, length=8), 16))
+    selected = select_samples_for_scene(
+        candidates=candidates,
+        empty_shots=empty_shots,
+        max_samples=args.max_samples_per_scene,
+        empty_shot_probability=args.empty_shot_probability,
+        max_shots=args.max_shots,
+        rng=rng,
+    )
     rows = []
     for rank, candidate in enumerate(selected, start=1):
         sample_id = (
@@ -268,6 +325,9 @@ def process_scene_pipeline_job(job: Dict) -> Dict:
         "character_rows": character_result["shots"],
         "characters": character_result["characters"],
         "sample_rows": sample_rows,
+        "empty_rows": [
+            row for row in character_result["shots"] if row.get("is_empty_shot")
+        ],
         "error": None,
     }
 
@@ -277,6 +337,7 @@ def prepare_manifests(work_root: Path, overwrite: bool) -> Dict[str, Path]:
         "shots": work_root / "shots" / "_manifests" / "shots.jsonl",
         "character_shots": work_root / "characters" / "_manifests" / "character_shots.jsonl",
         "characters": work_root / "characters" / "_manifests" / "characters.jsonl",
+        "empty_shots": work_root / "characters" / "_manifests" / "empty_shots.jsonl",
         "samples": work_root / "samples" / "samples.jsonl",
     }
     for path in paths.values():
@@ -317,7 +378,7 @@ def process(args: argparse.Namespace) -> None:
     with concurrent.futures.ProcessPoolExecutor(
         max_workers=worker_count,
         initializer=init_worker,
-        initargs=(args.device, args.devices, args.face_model),
+        initargs=(args.device, args.devices, args.face_model, args.model_cache_dir),
     ) as executor:
         future_to_job = {executor.submit(process_scene_pipeline_job, job): job for job in jobs}
         for done_count, future in enumerate(
@@ -334,6 +395,7 @@ def process(args: argparse.Namespace) -> None:
                     "shot_rows": [],
                     "character_rows": [],
                     "characters": [],
+                    "empty_rows": [],
                     "sample_rows": [],
                     "error": repr(exc),
                 }
@@ -361,6 +423,8 @@ def process(args: argparse.Namespace) -> None:
             append_jsonl(manifests["character_shots"], result["character_rows"])
         if result["characters"]:
             append_jsonl(manifests["characters"], result["characters"])
+        if result["empty_rows"]:
+            append_jsonl(manifests["empty_shots"], result["empty_rows"])
         if result["sample_rows"]:
             append_jsonl(manifests["samples"], result["sample_rows"])
 
@@ -373,6 +437,8 @@ def process(args: argparse.Namespace) -> None:
             "failed_scene_count": len(failed),
             "sample_count": sample_count,
             "write_videos": args.write_videos,
+            "empty_shot_probability": args.empty_shot_probability,
+            "seed": args.seed,
         },
     )
     print(f"[done] scenes={len(jobs)}, failed={len(failed)}, samples={sample_count}")
@@ -396,7 +462,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--scene-content-threshold", type=float, default=27.5)
     parser.add_argument("--adaptive-threshold", type=float, default=2.5)
     parser.add_argument("--min-detect-seconds", type=float, default=0.12)
-    parser.add_argument("--min-shot-seconds", type=float, default=1.0)
+    parser.add_argument("--min-shot-seconds", type=float, default=2.0)
     parser.add_argument("--merge-short-seconds", type=float, default=0.0)
     parser.add_argument("--trim-head-frames", type=int, default=3)
     parser.add_argument("--trim-tail-frames", type=int, default=3)
@@ -412,12 +478,28 @@ def parse_args() -> argparse.Namespace:
         help="Comma-separated worker device list, e.g. cuda:0,cuda:1,cuda:2,cuda:3.",
     )
     parser.add_argument("--face-model", default="vggface2")
+    parser.add_argument(
+        "--model-cache-dir",
+        default=".",
+        help="Torch/facenet model cache directory; default is the current directory.",
+    )
     parser.add_argument("--sample-frames", type=int, default=8)
-    parser.add_argument("--min-face", type=int, default=28)
-    parser.add_argument("--min-face-prob", type=float, default=0.90)
-    parser.add_argument("--dbscan-eps", type=float, default=0.38)
+    parser.add_argument("--min-face", type=int, default=30)
+    parser.add_argument("--min-shot-duration", type=float, default=2.0)
+    parser.add_argument("--max-center-distance", type=float, default=0.6)
+    parser.add_argument("--min-core-face-area-ratio", type=float, default=0.02)
+    parser.add_argument("--dbscan-eps", type=float, default=0.40)
     parser.add_argument("--dbscan-min-samples", type=int, default=2)
-    parser.add_argument("--min-shots-per-character", type=int, default=2)
+    parser.add_argument("--cluster-max-distance", type=float, default=0.40)
+    parser.add_argument(
+        "--min-shots-per-character",
+        type=int,
+        default=2,
+        help=(
+            "Kept for compatibility. Single-shot characters are retained unless "
+            "the whole scene has only one single-shot character."
+        ),
+    )
 
     parser.add_argument("--min-shots", type=int, default=3)
     parser.add_argument("--max-shots", type=int, default=6)
@@ -425,6 +507,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-character-confidence", type=float, default=0.35)
     parser.add_argument("--min-score", type=float, default=0.48)
     parser.add_argument("--max-samples-per-scene", type=int, default=5)
+    parser.add_argument("--empty-shot-probability", type=float, default=0.0)
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--candidate-strategy",
+        choices=["window", "combinations"],
+        default="window",
+    )
+    parser.add_argument("--max-candidate-pool", type=int, default=2000)
+    parser.add_argument("--max-candidate-combinations", type=int, default=50000)
     return parser.parse_args()
 
 
