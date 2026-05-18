@@ -22,7 +22,7 @@ export LOGLEVEL=INFO
 export PATH="/home/yuchaog/workplace/miniconda3/envs/data_process/bin:${PATH}"
 
 # REQUIRED: TransNetV2 project root.
-PROJECT_ROOT="/lustre/fs11/portfolios/nvr/projects/nvr_elm_llm/users/yuchaog/workplace/code/chenlan/data_process/movie/TransNetV2"
+PROJECT_ROOT="/lustre/fs11/portfolios/nvr/projects/nvr_elm_llm/users/yuchaog/workplace/code/chenlan/data_process"
 
 # OPTIONAL: set before sbatch if the dataset requires auth:
 #   export HF_TOKEN="..."
