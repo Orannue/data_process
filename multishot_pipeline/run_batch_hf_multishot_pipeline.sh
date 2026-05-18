@@ -53,13 +53,13 @@ SEVENZIP_BIN="${SEVENZIP_BIN:-7z}"
 DOWNLOAD_WORKERS=2
 
 # [可选] 同时解压几个 .7z。解压吃 CPU/IO，磁盘压力大时建议 1-2。
-EXTRACT_WORKERS=1
+EXTRACT_WORKERS=2
 
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
-MOVIE_WORKERS=1
+MOVIE_WORKERS=2
 
 # [可选] 每部电影内部同时处理几个 scene。留空时自动等于该电影分到的 GPU 数。
-SCENE_WORKERS=1
+SCENE_WORKERS=4
 
 # [必填] 可用 GPU 列表。脚本会按 MOVIE_WORKERS 自动连续分组。
 DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"  
