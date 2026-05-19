@@ -56,10 +56,10 @@ DOWNLOAD_WORKERS=2
 EXTRACT_WORKERS=2
 
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
-MOVIE_WORKERS=2
+MOVIE_WORKERS="${MOVIE_WORKERS:-4}"
 
 # [可选] 每部电影的默认 scene worker 数。CHARACTER_WORKERS 留空时会用这个值。
-MOVIE_WORKERS="${SCENE_WORKERS:-4}"
+SCENE_WORKERS="${SCENE_WORKERS:-4}"
 
 # [可选] 每部电影 split shot 阶段的 CPU worker 数。scene 很多时可以大于 GPU 数。
 SPLIT_WORKERS="${SPLIT_WORKERS:-16}"
@@ -217,35 +217,35 @@ cmd=(
   --discover-interval-seconds "${DISCOVER_INTERVAL_SECONDS}"
 )
 
-if [[ -n "${HF_TOKEN}" ]]; then
+if [[ -n "${HF_TOKEN:-}" ]]; then
   cmd+=(--hf-token "${HF_TOKEN}")
 fi
 
-if [[ -n "${SCENE_WORKERS}" ]]; then
+if [[ -n "${SCENE_WORKERS:-}" ]]; then
   cmd+=(--scene-workers "${SCENE_WORKERS}")
 fi
 
-if [[ -n "${SPLIT_WORKERS}" ]]; then
+if [[ -n "${SPLIT_WORKERS:-}" ]]; then
   cmd+=(--split-workers "${SPLIT_WORKERS}")
 fi
 
-if [[ -n "${CHARACTER_WORKERS}" ]]; then
+if [[ -n "${CHARACTER_WORKERS:-}" ]]; then
   cmd+=(--character-workers "${CHARACTER_WORKERS}")
 fi
 
-if [[ -n "${SAMPLE_WORKERS}" ]]; then
+if [[ -n "${SAMPLE_WORKERS:-}" ]]; then
   cmd+=(--sample-workers "${SAMPLE_WORKERS}")
 fi
 
-if [[ -n "${DEVICES}" ]]; then
+if [[ -n "${DEVICES:-}" ]]; then
   cmd+=(--devices "${DEVICES}")
 fi
 
-if [[ -n "${DEVICE_GROUPS}" ]]; then
+if [[ -n "${DEVICE_GROUPS:-}" ]]; then
   cmd+=(--device-groups "${DEVICE_GROUPS}")
 fi
 
-if [[ -n "${DEVICE}" ]]; then
+if [[ -n "${DEVICE:-}" ]]; then
   cmd+=(--device "${DEVICE}")
 fi
 
