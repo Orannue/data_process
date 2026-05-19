@@ -50,13 +50,13 @@ SEVENZIP_BIN="${SEVENZIP_BIN:-7z}"
 # =========================
 
 # [可选] 同时下载几个 .7z。网络或磁盘压力大时调小；下载慢时可调到 2-4。
-DOWNLOAD_WORKERS=2
+DOWNLOAD_WORKERS=5
 
 # [可选] 同时解压几个 .7z。解压吃 CPU/IO，磁盘压力大时建议 1-2。
 EXTRACT_WORKERS=2
 
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
-MOVIE_WORKERS="${MOVIE_WORKERS:-4}"
+MOVIE_WORKERS="${MOVIE_WORKERS:-20}"
 
 # [可选] 每部电影的默认 scene worker 数。CHARACTER_WORKERS 留空时会用这个值。
 SCENE_WORKERS="${SCENE_WORKERS:-4}"
