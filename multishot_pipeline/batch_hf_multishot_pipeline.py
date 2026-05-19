@@ -1127,10 +1127,15 @@ def main() -> int:
                     movie_fields.pop("movie_id", None)
                     state.update_movie(movie_id, **movie_fields)
                     status = result.get("status")
-                    if status in TERMINAL_MOVIE_STATUSES:
+                    if status in TERMINAL_MOVIE_STATUSES or status == STAGE_DONE_MOVIE_STATUS:
                         log(f"[movie terminal] {movie_id}: {status}")
-                    else:
+                    elif status == "failed":
                         log(f"[movie failed] {movie_id}: {result.get('error')}")
+                    else:
+                        log(
+                            f"[movie non-terminal] {movie_id}: "
+                            f"status={status}, reason={result.get('reason')}, error={result.get('error')}"
+                        )
 
             schedule_available_movies()
             state.save()
