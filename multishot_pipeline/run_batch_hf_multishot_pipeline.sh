@@ -59,7 +59,7 @@ EXTRACT_WORKERS=2
 MOVIE_WORKERS=2
 
 # [可选] 每部电影的默认 scene worker 数。CHARACTER_WORKERS 留空时会用这个值。
-SCENE_WORKERS="${SCENE_WORKERS:-4}"
+MOVIE_WORKERS="${SCENE_WORKERS:-4}"
 
 # [可选] 每部电影 split shot 阶段的 CPU worker 数。scene 很多时可以大于 GPU 数。
 SPLIT_WORKERS="${SPLIT_WORKERS:-16}"
