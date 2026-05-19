@@ -56,13 +56,13 @@ DOWNLOAD_WORKERS=5
 EXTRACT_WORKERS=2
 
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
-MOVIE_WORKERS="${MOVIE_WORKERS:-20}"
+MOVIE_WORKERS="${MOVIE_WORKERS:-4}"
 
 # [可选] 每部电影的默认 scene worker 数。CHARACTER_WORKERS 留空时会用这个值。
 SCENE_WORKERS="${SCENE_WORKERS:-4}"
 
 # [可选] 每部电影 split shot 阶段的 CPU worker 数。scene 很多时可以大于 GPU 数。
-SPLIT_WORKERS="${SPLIT_WORKERS:-16}"
+SPLIT_WORKERS="${SPLIT_WORKERS:-8}"
 
 # [可选] 每部电影 character_cluster 阶段的 GPU worker 数。留空表示使用 SCENE_WORKERS。
 CHARACTER_WORKERS="${CHARACTER_WORKERS:-}"
