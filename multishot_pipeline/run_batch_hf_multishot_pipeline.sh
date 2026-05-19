@@ -6,19 +6,19 @@ set -euo pipefail
 # 约定：1 表示开启，0 表示关闭；空字符串 "" 表示使用脚本默认逻辑。
 # =========================
 
-# [必填] Hugging Face 数据集仓库 ID。当前就是你的 raw data 仓库，一般不用改。
+# [必填] Hugging Face 数据集仓库 ID。当前就是你的 raw data 仓库。
 REPO_ID="Orannue/moviedataset"
 
-# [可选] Hugging Face 仓库版本/分支/commit。通常用 main。
+# [可选] Hugging Face 仓库版本、分支或 commit。通常保持 main。
 REVISION="main"
 
-# [可选] Hugging Face token。不要写死在脚本里；需要权限时先运行：export HF_TOKEN="你的token"。
+# [可选] Hugging Face token。不要写死在脚本里；需要权限时先 export HF_TOKEN="你的token"。
 HF_TOKEN="${HF_TOKEN:-}"
 
-# [可选] 需要下载/解压的压缩包匹配规则。默认处理所有 .7z。
+# [可选] 需要下载和解压的压缩包匹配规则。默认处理所有 .7z。
 ARCHIVE_PATTERN="*.7z"
 
-# [必填] 场景标注 JSON。相对路径会自动按项目根目录解析；也可以填绝对路径。
+# [必填] 场景标注 JSON。相对路径会按项目根目录解析，也可以填绝对路径。
 SCENE_JSON="movies_scenes.json"
 
 # [必填] Hugging Face 下载下来的 .7z 存放目录。解压成功后默认会删除这里的 .7z。
@@ -27,7 +27,7 @@ DOWNLOAD_ROOT="data_raw/moviedataset_archives"
 # [必填] .7z 解压后的 raw movie 数据目录。脚本会从这里发现 movie_id。
 EXTRACT_ROOT="data_raw/moviedataset_extracted"
 
-# [必填] 中间结果目录：shots、characters、samples、cropped_samples、日志都会写这里。
+# [必填] 中间结果目录。shots、characters、samples、cropped_samples、日志都会写这里。
 WORK_ROOT="movie_multishot_work"
 
 # [可选] 额外最终输出目录。MERGE_IN_PLACE=1 时不会用它保存 merged.mp4。
@@ -49,7 +49,7 @@ SEVENZIP_BIN="${SEVENZIP_BIN:-7z}"
 # 并行与吞吐参数
 # =========================
 
-# [可选] 同时下载几个 .7z。网络/磁盘压力大时调小；下载很慢时可调到 2-4。
+# [可选] 同时下载几个 .7z。网络或磁盘压力大时调小；下载慢时可调到 2-4。
 DOWNLOAD_WORKERS=2
 
 # [可选] 同时解压几个 .7z。解压吃 CPU/IO，磁盘压力大时建议 1-2。
@@ -58,13 +58,22 @@ EXTRACT_WORKERS=2
 # [必填] 同时处理几部电影。8 卡建议先用 2；CPU/IO 很强时可尝试 4。
 MOVIE_WORKERS=2
 
-# [可选] 每部电影内部同时处理几个 scene。留空时自动等于该电影分到的 GPU 数。
-SCENE_WORKERS=4
+# [可选] 每部电影的默认 scene worker 数。CHARACTER_WORKERS 留空时会用这个值。
+SCENE_WORKERS="${SCENE_WORKERS:-4}"
+
+# [可选] 每部电影 split shot 阶段的 CPU worker 数。scene 很多时可以大于 GPU 数。
+SPLIT_WORKERS="${SPLIT_WORKERS:-16}"
+
+# [可选] 每部电影 character_cluster 阶段的 GPU worker 数。留空表示使用 SCENE_WORKERS。
+CHARACTER_WORKERS="${CHARACTER_WORKERS:-}"
+
+# [可选] 每部电影 build_multishot_samples 阶段的 CPU worker 数。
+SAMPLE_WORKERS="${SAMPLE_WORKERS:-8}"
 
 # [必填] 可用 GPU 列表。脚本会按 MOVIE_WORKERS 自动连续分组。
 DEVICES="cuda:0,cuda:1,cuda:2,cuda:3,cuda:4,cuda:5,cuda:6,cuda:7"
 
-# [可选] 手动指定每个 movie worker 的 GPU 组；例如 "cuda:0,cuda:1;cuda:2,cuda:3"。留空自动分组。
+# [可选] 手动指定每个 movie worker 的 GPU 组，例如 "cuda:0,cuda:1;cuda:2,cuda:3"。留空自动分组。
 DEVICE_GROUPS=""
 
 # [可选] 单设备模式。使用 DEVICES 时这里留空。
@@ -74,7 +83,7 @@ DEVICE=""
 # 样本处理参数
 # =========================
 
-# [可选] 是否在 build_multishot_samples 阶段写原始 merged sample video。通常设 0，因为最后还会重新 crop/resize。
+# [可选] 是否在 build_multishot_samples 阶段写原始 merged sample video。通常设 0。
 WRITE_VIDEOS=0
 
 # [建议保持默认] merged.mp4 是否写回 sample 的 shot 文件夹。1 表示和 shot_0001.mp4 放一起。
@@ -111,7 +120,7 @@ SKIP_DOWNLOAD=0
 # [可选] 跳过解压阶段。EXTRACT_ROOT 已经准备好时可设 1。
 SKIP_EXTRACT=0
 
-# [可选] 跳过处理阶段。只想下载/解压时设 1。
+# [可选] 跳过处理阶段。只想下载和解压时设 1。
 SKIP_PROCESS=0
 
 # [建议保持默认] 每个 archive 解压到独立子目录，避免不同压缩包文件名互相覆盖。
@@ -126,14 +135,14 @@ OVERWRITE_EXTRACT=0
 # [可选] 覆盖已处理电影的输出。通常保持 0；需要全量重跑时设 1。
 OVERWRITE_OUTPUTS=0
 
-# [可选] 重跑之前失败的电影。失败修复后设 1。
+# [可选] 重新跑之前失败的电影。修复依赖或参数后建议保持 1。
 RETRY_FAILED=1
 
 # =========================
 # 小规模测试参数
 # =========================
 
-# [可选] 只跑某一部电影，例如 "0008_Fargo"。留空表示不限制。
+# [可选] 只跑某一部电影，例如 "0001_American_Beauty"。留空表示不限制。
 ONLY_MOVIE=""
 
 # [可选] 最多处理几部电影。smoke test 可设 1 或 3；留空表示不限制。
@@ -148,6 +157,9 @@ MAX_ARCHIVES=""
 
 # [可选] 透传给 run_scene_pipeline_parallel.py 的额外参数，例如 "--min-shot-seconds 2.0"。
 PIPELINE_EXTRA_ARGS=""
+
+# [可选] 只跑部分 scene pipeline 阶段。全流程用 split,character,sample；只跑一个阶段可填 split / character / sample。
+PIPELINE_STAGES="${PIPELINE_STAGES:-split,character,sample}"
 
 # [可选] 透传给 crop_sample_shots.py 的额外参数。
 CROP_EXTRA_ARGS=""
@@ -200,6 +212,7 @@ cmd=(
   --target-height "${TARGET_HEIGHT}"
   --min-clips "${MIN_CLIPS}"
   --merge-jobs "${MERGE_JOBS}"
+  --pipeline-stages "${PIPELINE_STAGES}"
   --poll-seconds "${POLL_SECONDS}"
   --discover-interval-seconds "${DISCOVER_INTERVAL_SECONDS}"
 )
@@ -210,6 +223,18 @@ fi
 
 if [[ -n "${SCENE_WORKERS}" ]]; then
   cmd+=(--scene-workers "${SCENE_WORKERS}")
+fi
+
+if [[ -n "${SPLIT_WORKERS}" ]]; then
+  cmd+=(--split-workers "${SPLIT_WORKERS}")
+fi
+
+if [[ -n "${CHARACTER_WORKERS}" ]]; then
+  cmd+=(--character-workers "${CHARACTER_WORKERS}")
+fi
+
+if [[ -n "${SAMPLE_WORKERS}" ]]; then
+  cmd+=(--sample-workers "${SAMPLE_WORKERS}")
 fi
 
 if [[ -n "${DEVICES}" ]]; then

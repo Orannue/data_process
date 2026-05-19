@@ -19,6 +19,8 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 HERE = Path(__file__).resolve().parent
 DONE_MOVIE_STATUSES = {"done"}
+PIPELINE_STAGE_ORDER = ("split", "character", "sample")
+STAGE_DONE_MOVIE_STATUS = "pipeline_stages_done"
 TERMINAL_MOVIE_STATUSES = {"done", "done_no_samples", "done_no_outputs"}
 TRANSIENT_MOVIE_STATUSES = {"queued", "running"}
 TRANSIENT_ARCHIVE_STATUSES = {"downloading", "extracting"}
@@ -74,6 +76,26 @@ def split_extra_args(value: Optional[str]) -> List[str]:
     if not value:
         return []
     return shlex.split(value, posix=os.name != "nt")
+
+
+def parse_stage_names(stages_arg: str) -> List[str]:
+    if not stages_arg or stages_arg.strip().lower() == "all":
+        return list(PIPELINE_STAGE_ORDER)
+    names = [item.strip().lower() for item in stages_arg.split(",") if item.strip()]
+    invalid = [name for name in names if name not in PIPELINE_STAGE_ORDER]
+    if invalid:
+        raise ValueError(
+            f"Invalid pipeline stage(s): {invalid}. "
+            f"Allowed stages: {', '.join(PIPELINE_STAGE_ORDER)}"
+        )
+    ordered = [stage for stage in PIPELINE_STAGE_ORDER if stage in set(names)]
+    if not ordered:
+        raise ValueError("Pipeline stages did not contain any runnable stage.")
+    return ordered
+
+
+def is_full_pipeline_stages(stages_arg: str) -> bool:
+    return parse_stage_names(stages_arg) == list(PIPELINE_STAGE_ORDER)
 
 
 def matches_any(path_text: str, patterns: Sequence[str]) -> bool:
@@ -193,6 +215,8 @@ def run_logged(
     with log_path.open("a", encoding="utf-8", errors="replace") as log_file:
         log_file.write(f"\n[{now_iso()}] $ {cmd_text}\n")
         log_file.flush()
+        env = os.environ.copy()
+        env.setdefault("PYTHONUNBUFFERED", "1")
         process = subprocess.Popen(
             [str(part) for part in cmd],
             cwd=str(cwd) if cwd else None,
@@ -201,6 +225,8 @@ def run_logged(
             text=True,
             encoding="utf-8",
             errors="replace",
+            bufsize=1,
+            env=env,
         )
         assert process.stdout is not None
         for line in process.stdout:
@@ -558,6 +584,57 @@ def inspect_movie_completion(args: argparse.Namespace, movie_id: str) -> Dict[st
     }
 
 
+def inspect_pipeline_stage_completion(args: argparse.Namespace, movie_id: str) -> Dict[str, Any]:
+    movie_work = movie_work_root(args, movie_id)
+    summary_path = movie_work / "_stage_pipeline_summary.json"
+    summary = read_json_if_exists(summary_path)
+    selected_stages = parse_stage_names(args.pipeline_stages)
+    if summary is None:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Missing stage pipeline summary: {summary_path}",
+        }
+    if summary.get("selected_stages") != selected_stages:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": (
+                f"Stage summary was for {summary.get('selected_stages')}, "
+                f"current request is {selected_stages}."
+            ),
+            "summary": summary,
+        }
+    failed_scene_count = int(summary.get("failed_scene_count", 0) or 0)
+    if failed_scene_count > 0:
+        return {
+            "terminal": False,
+            "status": "failed",
+            "reason": f"Stage pipeline has {failed_scene_count} failed scenes.",
+            "summary": summary,
+        }
+    scene_count = int(summary.get("scene_count", 0) or 0)
+    stage_counts = summary.get("stage_counts", {}) or {}
+    incomplete = []
+    for stage in selected_stages:
+        count = int((stage_counts.get(stage, {}) or {}).get("scene_count", 0) or 0)
+        if count < scene_count:
+            incomplete.append(f"{stage}={count}/{scene_count}")
+    if incomplete:
+        return {
+            "terminal": False,
+            "status": None,
+            "reason": f"Stage summary is incomplete: {', '.join(incomplete)}",
+            "summary": summary,
+        }
+    return {
+        "terminal": True,
+        "status": STAGE_DONE_MOVIE_STATUS,
+        "reason": "Requested pipeline stages reached terminal state.",
+        "summary": summary,
+    }
+
+
 def check_scene_pipeline_summary(movie_work: Path) -> Dict[str, Any]:
     summary_path = movie_work / "samples" / "summary.json"
     if not summary_path.exists():
@@ -596,7 +673,15 @@ def build_pipeline_cmd(
         movie_id,
         "--scene-workers",
         str(workers),
+        "--stages",
+        args.pipeline_stages,
     ]
+    if args.split_workers is not None:
+        cmd.extend(["--split-workers", str(args.split_workers)])
+    if args.character_workers is not None:
+        cmd.extend(["--character-workers", str(args.character_workers)])
+    if args.sample_workers is not None:
+        cmd.extend(["--sample-workers", str(args.sample_workers)])
     if args.write_videos:
         cmd.append("--write-videos")
     if args.overwrite:
@@ -669,6 +754,10 @@ def process_movie(
         "merge_output_root": str(merge_output_root),
         "device_group": device_group,
         "scene_workers": scene_workers_for_group(args, device_group),
+        "split_workers": args.split_workers,
+        "character_workers": args.character_workers,
+        "sample_workers": args.sample_workers,
+        "pipeline_stages": parse_stage_names(args.pipeline_stages),
         "started_at": started_at,
     }
     write_movie_marker(movie_work, {**marker_base, "status": "running"})
@@ -680,6 +769,21 @@ def process_movie(
             step=f"{movie_id}:scene_pipeline",
             stream=args.stream_subprocess_output,
         )
+
+        if not is_full_pipeline_stages(args.pipeline_stages):
+            completion = inspect_pipeline_stage_completion(args, movie_id)
+            if not completion["terminal"]:
+                raise RuntimeError(f"Incomplete requested stages: {completion['reason']}")
+            result = {
+                **marker_base,
+                "status": STAGE_DONE_MOVIE_STATUS,
+                "finished_at": now_iso(),
+                "reason": completion["reason"],
+                "completion": completion,
+            }
+            write_movie_marker(movie_work, result)
+            return result
+
         scene_summary = check_scene_pipeline_summary(movie_work)
 
         samples_manifest = movie_work / "samples" / "samples.jsonl"
@@ -756,6 +860,12 @@ def should_submit_movie(
     status = state.movies.get(movie_id, {}).get("status")
     if args.overwrite:
         return True
+    if status == STAGE_DONE_MOVIE_STATUS and not is_full_pipeline_stages(args.pipeline_stages):
+        completion = inspect_pipeline_stage_completion(args, movie_id)
+        if completion["terminal"]:
+            return False
+        log(f"[movie requeue] {movie_id}: stage state is stale: {completion['reason']}")
+        return True
     if status in TERMINAL_MOVIE_STATUSES:
         completion = inspect_movie_completion(args, movie_id)
         if completion["terminal"]:
@@ -776,6 +886,7 @@ def main() -> int:
     args.final_root = args.final_root.resolve()
     args.pipeline_dir = args.pipeline_dir.resolve()
     args.model_cache_dir = args.model_cache_dir.resolve() if args.model_cache_dir else None
+    args.pipeline_stages = ",".join(parse_stage_names(args.pipeline_stages))
 
     args.work_root.mkdir(parents=True, exist_ok=True)
     args.final_root.mkdir(parents=True, exist_ok=True)
@@ -795,12 +906,20 @@ def main() -> int:
         log(
             "[mode] scene-dominant mode: "
             f"movie_workers={args.movie_workers}, scene_workers={default_workers}, "
+            f"pipeline_stages={args.pipeline_stages}, "
+            f"split_workers={args.split_workers}, "
+            f"character_workers={args.character_workers}, "
+            f"sample_workers={args.sample_workers}, "
             f"device_groups={device_groups}"
         )
     else:
         log(
             "[mode] configured mode: "
             f"movie_workers={args.movie_workers}, scene_workers={args.scene_workers}, "
+            f"pipeline_stages={args.pipeline_stages}, "
+            f"split_workers={args.split_workers}, "
+            f"character_workers={args.character_workers}, "
+            f"sample_workers={args.sample_workers}, "
             f"device_groups={device_groups}"
         )
 
@@ -879,7 +998,10 @@ def main() -> int:
             log(
                 f"[movie queued] {movie_id} "
                 f"root={parent_root} devices={group} "
-                f"scene_workers={scene_workers_for_group(args, group)}"
+                f"scene_workers={scene_workers_for_group(args, group)} "
+                f"split_workers={args.split_workers} "
+                f"character_workers={args.character_workers} "
+                f"sample_workers={args.sample_workers}"
             )
 
     try:
@@ -1113,6 +1235,33 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Scene workers per movie. Default: number of devices in that movie's group.",
     )
+    parser.add_argument(
+        "--split-workers",
+        type=int,
+        default=None,
+        help=(
+            "CPU workers per movie for shot splitting. Default: the per-movie "
+            "scene worker count."
+        ),
+    )
+    parser.add_argument(
+        "--character-workers",
+        type=int,
+        default=None,
+        help=(
+            "GPU workers per movie for character clustering. Default: the "
+            "per-movie scene worker count."
+        ),
+    )
+    parser.add_argument(
+        "--sample-workers",
+        type=int,
+        default=None,
+        help=(
+            "CPU workers per movie for sample building. Default: the per-movie "
+            "scene worker count."
+        ),
+    )
     parser.add_argument("--device", default=None)
     parser.add_argument(
         "--devices",
@@ -1129,6 +1278,14 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument("--write-videos", action="store_true")
+    parser.add_argument(
+        "--pipeline-stages",
+        default="split,character,sample",
+        help=(
+            "Comma-separated run_scene_pipeline_parallel.py stages. "
+            "Use split, character, or sample for a resumable partial stage run."
+        ),
+    )
     parser.add_argument("--max-latent-frames", type=int, default=127)
     parser.add_argument("--target-width", type=int, default=832)
     parser.add_argument("--target-height", type=int, default=480)
