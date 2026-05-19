@@ -20,7 +20,9 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 HERE = Path(__file__).resolve().parent
 DONE_MOVIE_STATUSES = {"done"}
 PIPELINE_STAGE_ORDER = ("split", "character", "sample")
+POST_STAGE_ORDER = ("crop", "merge")
 STAGE_DONE_MOVIE_STATUS = "pipeline_stages_done"
+POST_DONE_MOVIE_STATUS = "post_stages_done"
 TERMINAL_MOVIE_STATUSES = {"done", "done_no_samples", "done_no_outputs"}
 TRANSIENT_MOVIE_STATUSES = {"queued", "running"}
 TRANSIENT_ARCHIVE_STATUSES = {"downloading", "extracting"}
@@ -79,8 +81,13 @@ def split_extra_args(value: Optional[str]) -> List[str]:
 
 
 def parse_stage_names(stages_arg: str) -> List[str]:
-    if not stages_arg or stages_arg.strip().lower() == "all":
+    if not stages_arg:
         return list(PIPELINE_STAGE_ORDER)
+    normalized = stages_arg.strip().lower()
+    if normalized == "all":
+        return list(PIPELINE_STAGE_ORDER)
+    if normalized in {"none", "skip", "off", "no"}:
+        return []
     names = [item.strip().lower() for item in stages_arg.split(",") if item.strip()]
     invalid = [name for name in names if name not in PIPELINE_STAGE_ORDER]
     if invalid:
@@ -96,6 +103,36 @@ def parse_stage_names(stages_arg: str) -> List[str]:
 
 def is_full_pipeline_stages(stages_arg: str) -> bool:
     return parse_stage_names(stages_arg) == list(PIPELINE_STAGE_ORDER)
+
+
+def parse_post_stage_names(stages_arg: str) -> List[str]:
+    if not stages_arg:
+        return []
+    normalized = stages_arg.strip().lower()
+    if normalized == "auto":
+        raise ValueError("'auto' must be resolved before parsing post stages.")
+    if normalized == "all":
+        return list(POST_STAGE_ORDER)
+    if normalized in {"none", "skip", "off", "no"}:
+        return []
+    names = [item.strip().lower() for item in stages_arg.split(",") if item.strip()]
+    invalid = [name for name in names if name not in POST_STAGE_ORDER]
+    if invalid:
+        raise ValueError(
+            f"Invalid post stage(s): {invalid}. "
+            f"Allowed stages: {', '.join(POST_STAGE_ORDER)}"
+        )
+    ordered = [stage for stage in POST_STAGE_ORDER if stage in set(names)]
+    if not ordered:
+        raise ValueError("Post stages did not contain any runnable stage.")
+    return ordered
+
+
+def resolve_post_stage_names(pipeline_stages: Sequence[str], post_stages_arg: str) -> List[str]:
+    normalized = (post_stages_arg or "auto").strip().lower()
+    if normalized == "auto":
+        return list(POST_STAGE_ORDER) if list(pipeline_stages) == list(PIPELINE_STAGE_ORDER) else []
+    return parse_post_stage_names(post_stages_arg)
 
 
 def matches_any(path_text: str, patterns: Sequence[str]) -> bool:
@@ -757,60 +794,91 @@ def process_movie(
         "split_workers": args.split_workers,
         "character_workers": args.character_workers,
         "sample_workers": args.sample_workers,
-        "pipeline_stages": parse_stage_names(args.pipeline_stages),
+        "pipeline_stages": args.pipeline_stage_names,
+        "post_stages": args.post_stage_names,
         "started_at": started_at,
     }
     write_movie_marker(movie_work, {**marker_base, "status": "running"})
 
     try:
-        run_logged(
-            build_pipeline_cmd(args, movie_id, moviebench_root, movie_work, device_group),
-            log_path=logs_dir / "01_scene_character_samples.log",
-            step=f"{movie_id}:scene_pipeline",
-            stream=args.stream_subprocess_output,
-        )
+        if args.pipeline_stage_names:
+            run_logged(
+                build_pipeline_cmd(args, movie_id, moviebench_root, movie_work, device_group),
+                log_path=logs_dir / "01_scene_character_samples.log",
+                step=f"{movie_id}:scene_pipeline",
+                stream=args.stream_subprocess_output,
+            )
 
-        if not is_full_pipeline_stages(args.pipeline_stages):
+        if args.pipeline_stage_names and not is_full_pipeline_stages(args.pipeline_stages):
             completion = inspect_pipeline_stage_completion(args, movie_id)
             if not completion["terminal"]:
                 raise RuntimeError(f"Incomplete requested stages: {completion['reason']}")
+            if not args.post_stage_names:
+                result = {
+                    **marker_base,
+                    "status": STAGE_DONE_MOVIE_STATUS,
+                    "finished_at": now_iso(),
+                    "reason": completion["reason"],
+                    "completion": completion,
+                }
+                write_movie_marker(movie_work, result)
+                return result
+
+        if args.pipeline_stage_names == list(PIPELINE_STAGE_ORDER):
+            scene_summary = check_scene_pipeline_summary(movie_work)
+        elif not args.post_stage_names:
             result = {
                 **marker_base,
-                "status": STAGE_DONE_MOVIE_STATUS,
+                "status": POST_DONE_MOVIE_STATUS,
                 "finished_at": now_iso(),
-                "reason": completion["reason"],
-                "completion": completion,
+                "reason": "No pipeline or post stages requested.",
             }
             write_movie_marker(movie_work, result)
             return result
-
-        scene_summary = check_scene_pipeline_summary(movie_work)
 
         samples_manifest = movie_work / "samples" / "samples.jsonl"
-        if not samples_manifest.exists():
+        if "crop" in args.post_stage_names and not samples_manifest.exists():
             raise FileNotFoundError(f"Missing samples manifest: {samples_manifest}")
 
-        run_logged(
-            build_crop_cmd(args, movie_work),
-            log_path=logs_dir / "02_crop_sample_shots.log",
-            step=f"{movie_id}:crop",
-            stream=args.stream_subprocess_output,
-        )
+        if "crop" in args.post_stage_names:
+            run_logged(
+                build_crop_cmd(args, movie_work),
+                log_path=logs_dir / "02_crop_sample_shots.log",
+                step=f"{movie_id}:crop",
+                stream=args.stream_subprocess_output,
+            )
 
-        completion = inspect_movie_completion(args, movie_id)
-        if completion["terminal"] and completion["status"] in {
-            "done_no_samples",
-            "done_no_outputs",
-        }:
+            completion = inspect_movie_completion(args, movie_id)
+            if "merge" not in args.post_stage_names and completion["terminal"] and completion["status"] in {
+                "done_no_samples",
+                "done_no_outputs",
+            }:
+                result = {
+                    **marker_base,
+                    "status": completion["status"],
+                    "finished_at": now_iso(),
+                    "reason": completion["reason"],
+                    "completion": completion,
+                }
+                write_movie_marker(movie_work, result)
+                return result
+
+        if "merge" not in args.post_stage_names:
             result = {
                 **marker_base,
-                "status": completion["status"],
+                "status": POST_DONE_MOVIE_STATUS,
                 "finished_at": now_iso(),
-                "reason": completion["reason"],
-                "completion": completion,
+                "reason": "Requested post stages completed.",
             }
             write_movie_marker(movie_work, result)
             return result
+
+        cropped_root = movie_work / "cropped_samples"
+        if not cropped_root.exists():
+            raise FileNotFoundError(
+                f"Missing cropped samples directory: {cropped_root}. "
+                "Run POST_STAGES=crop,merge or run crop first."
+            )
 
         run_logged(
             build_merge_cmd(args, movie_work, merge_output_root),
@@ -860,6 +928,8 @@ def should_submit_movie(
     status = state.movies.get(movie_id, {}).get("status")
     if args.overwrite:
         return True
+    if status == POST_DONE_MOVIE_STATUS and args.post_stage_names:
+        return False
     if status == STAGE_DONE_MOVIE_STATUS and not is_full_pipeline_stages(args.pipeline_stages):
         completion = inspect_pipeline_stage_completion(args, movie_id)
         if completion["terminal"]:
@@ -886,7 +956,13 @@ def main() -> int:
     args.final_root = args.final_root.resolve()
     args.pipeline_dir = args.pipeline_dir.resolve()
     args.model_cache_dir = args.model_cache_dir.resolve() if args.model_cache_dir else None
-    args.pipeline_stages = ",".join(parse_stage_names(args.pipeline_stages))
+    args.pipeline_stage_names = parse_stage_names(args.pipeline_stages)
+    args.pipeline_stages = ",".join(args.pipeline_stage_names) if args.pipeline_stage_names else "none"
+    args.post_stage_names = resolve_post_stage_names(
+        args.pipeline_stage_names,
+        args.post_stages,
+    )
+    args.post_stages = ",".join(args.post_stage_names) if args.post_stage_names else "none"
 
     args.work_root.mkdir(parents=True, exist_ok=True)
     args.final_root.mkdir(parents=True, exist_ok=True)
@@ -907,6 +983,7 @@ def main() -> int:
             "[mode] scene-dominant mode: "
             f"movie_workers={args.movie_workers}, scene_workers={default_workers}, "
             f"pipeline_stages={args.pipeline_stages}, "
+            f"post_stages={args.post_stages}, "
             f"split_workers={args.split_workers}, "
             f"character_workers={args.character_workers}, "
             f"sample_workers={args.sample_workers}, "
@@ -917,6 +994,7 @@ def main() -> int:
             "[mode] configured mode: "
             f"movie_workers={args.movie_workers}, scene_workers={args.scene_workers}, "
             f"pipeline_stages={args.pipeline_stages}, "
+            f"post_stages={args.post_stages}, "
             f"split_workers={args.split_workers}, "
             f"character_workers={args.character_workers}, "
             f"sample_workers={args.sample_workers}, "
@@ -999,6 +1077,8 @@ def main() -> int:
                 f"[movie queued] {movie_id} "
                 f"root={parent_root} devices={group} "
                 f"scene_workers={scene_workers_for_group(args, group)} "
+                f"pipeline_stages={args.pipeline_stages} "
+                f"post_stages={args.post_stages} "
                 f"split_workers={args.split_workers} "
                 f"character_workers={args.character_workers} "
                 f"sample_workers={args.sample_workers}"
@@ -1288,7 +1368,16 @@ def parse_args() -> argparse.Namespace:
         default="split,character,sample",
         help=(
             "Comma-separated run_scene_pipeline_parallel.py stages. "
-            "Use split, character, or sample for a resumable partial stage run."
+            "Use split, character, sample, or none for a resumable partial run."
+        ),
+    )
+    parser.add_argument(
+        "--post-stages",
+        default="auto",
+        help=(
+            "Comma-separated post stages: crop,merge. Default auto runs crop,merge "
+            "only after the full split,character,sample pipeline. Use "
+            "--pipeline-stages none --post-stages crop,merge to process existing samples."
         ),
     )
     parser.add_argument("--max-latent-frames", type=int, default=127)

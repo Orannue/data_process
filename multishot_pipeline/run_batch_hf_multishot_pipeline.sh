@@ -87,22 +87,22 @@ DEVICE=""
 WRITE_VIDEOS=0
 
 # [建议保持默认] merged.mp4 是否写回 sample 的 shot 文件夹。1 表示和 shot_0001.mp4 放一起。
-MERGE_IN_PLACE=1
+MERGE_IN_PLACE="${MERGE_IN_PLACE:-1}"
 
 # [可选] crop_sample_shots 的 latent 帧上限。
-MAX_LATENT_FRAMES=127
+MAX_LATENT_FRAMES="${MAX_LATENT_FRAMES:-127}"
 
 # [可选] 最终视频宽度。
-TARGET_WIDTH=832
+TARGET_WIDTH="${TARGET_WIDTH:-832}"
 
 # [可选] 最终视频高度。
-TARGET_HEIGHT=480
+TARGET_HEIGHT="${TARGET_HEIGHT:-480}"
 
 # [可选] merge 阶段每个 sample 至少需要几个 clip。multishot 建议 2。
-MIN_CLIPS=2
+MIN_CLIPS="${MIN_CLIPS:-2}"
 
 # [可选] merge/crop/resize 的 CPU 并行数。每个 movie worker 都会用这个值，别设太夸张。
-MERGE_JOBS=4
+MERGE_JOBS="${MERGE_JOBS:-4}"
 
 # =========================
 # 断点续跑、覆盖、清理参数
@@ -156,16 +156,19 @@ MAX_ARCHIVES=""
 # =========================
 
 # [可选] 透传给 run_scene_pipeline_parallel.py 的额外参数，例如 "--min-shot-seconds 2.0"。
-PIPELINE_EXTRA_ARGS=""
+PIPELINE_EXTRA_ARGS="${PIPELINE_EXTRA_ARGS:-}"
 
 # [可选] 只跑部分 scene pipeline 阶段。全流程用 split,character,sample；只跑一个阶段可填 split / character / sample。
 PIPELINE_STAGES="${PIPELINE_STAGES:-split,character,sample}"
 
+# [可选] 跑 crop/merge 后处理阶段。auto 表示完整 scene pipeline 后自动跑 crop,merge；已有 sample 时可设 crop,merge。
+POST_STAGES="${POST_STAGES:-auto}"
+
 # [可选] 透传给 crop_sample_shots.py 的额外参数。
-CROP_EXTRA_ARGS=""
+CROP_EXTRA_ARGS="${CROP_EXTRA_ARGS:-}"
 
 # [可选] 透传给 merge_crop_resize_samples.py 的额外参数，例如 "--crf 20 --preset medium"。
-MERGE_EXTRA_ARGS=""
+MERGE_EXTRA_ARGS="${MERGE_EXTRA_ARGS:-}"
 
 # [可选] 主循环轮询间隔，单位秒。
 POLL_SECONDS=10
@@ -213,6 +216,7 @@ cmd=(
   --min-clips "${MIN_CLIPS}"
   --merge-jobs "${MERGE_JOBS}"
   --pipeline-stages "${PIPELINE_STAGES}"
+  --post-stages "${POST_STAGES}"
   --poll-seconds "${POLL_SECONDS}"
   --discover-interval-seconds "${DISCOVER_INTERVAL_SECONDS}"
 )
