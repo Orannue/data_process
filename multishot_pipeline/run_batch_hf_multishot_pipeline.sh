@@ -22,19 +22,22 @@ ARCHIVE_PATTERN="*.7z"
 SCENE_JSON="movies_scenes.json"
 
 # [必填] Hugging Face 下载下来的 .7z 存放目录。解压成功后默认会删除这里的 .7z。
-DOWNLOAD_ROOT="data_raw/moviedataset_archives"
+DOWNLOAD_ROOT="${DOWNLOAD_ROOT:-data_raw/moviedataset_archives}"
 
 # [必填] .7z 解压后的 raw movie 数据目录。脚本会从这里发现 movie_id。
-EXTRACT_ROOT="data_raw/moviedataset_extracted"
+EXTRACT_ROOT="${EXTRACT_ROOT:-data_raw/moviedataset_extracted}"
 
 # [必填] 中间结果目录。shots、characters、samples、cropped_samples、日志都会写这里。
-WORK_ROOT="movie_multishot_work"
+WORK_ROOT="${WORK_ROOT:-movie_multishot_work}"
 
 # [可选] 额外最终输出目录。MERGE_IN_PLACE=1 时不会用它保存 merged.mp4。
-FINAL_ROOT="movie_multishot_final"
+FINAL_ROOT="${FINAL_ROOT:-movie_multishot_final}"
 
 # [可选] batch 状态文件路径。留空时默认写到 WORK_ROOT/_batch_pipeline_state.json。
-STATE_FILE=""
+STATE_FILE="${STATE_FILE:-}"
+
+# [可选] 复用旧 work root 里的 split/character 结果，同时把新 sample/crop/merge 写到 WORK_ROOT。
+REUSE_WORK_ROOT="${REUSE_WORK_ROOT:-}"
 
 # [可选] Inception/FaceNet 权重缓存目录。留空时默认写到当前运行目录的 model_cache。
 MODEL_CACHE_DIR=""
@@ -65,7 +68,7 @@ SCENE_WORKERS="${SCENE_WORKERS:-4}"
 SPLIT_WORKERS="${SPLIT_WORKERS:-8}"
 
 # [可选] 每部电影 character_cluster 阶段的 GPU worker 数。留空表示使用 SCENE_WORKERS。
-CHARACTER_WORKERS="${CHARACTER_WORKERS:-}"
+CHARACTER_WORKERS="${CHARACTER_WORKERS:-8}"
 
 # [可选] 每部电影 build_multishot_samples 阶段的 CPU worker 数。
 SAMPLE_WORKERS="${SAMPLE_WORKERS:-8}"
@@ -86,6 +89,18 @@ DEVICE=""
 # [可选] 是否在 build_multishot_samples 阶段写原始 merged sample video。通常设 0。
 WRITE_VIDEOS=0
 
+# [可选] sample 生成策略。default 为旧逻辑；fixed-latent 为 2-3 shots / 22 latent / 85 frames 逻辑。
+SAMPLE_BUILDER="${SAMPLE_BUILDER:-default}"
+
+# [可选] fixed-latent sample 的总 latent frame 数。22 latent 对应 85 帧。
+FIXED_SAMPLE_LATENT_FRAMES="${FIXED_SAMPLE_LATENT_FRAMES:-22}"
+
+# [可选] fixed-latent sample 最少 shot 数。
+FIXED_SAMPLE_MIN_SHOTS="${FIXED_SAMPLE_MIN_SHOTS:-2}"
+
+# [可选] fixed-latent sample 最多 shot 数。
+FIXED_SAMPLE_MAX_SHOTS="${FIXED_SAMPLE_MAX_SHOTS:-3}"
+
 # [建议保持默认] merged.mp4 是否写回 sample 的 shot 文件夹。1 表示和 shot_0001.mp4 放一起。
 MERGE_IN_PLACE="${MERGE_IN_PLACE:-1}"
 
@@ -102,7 +117,7 @@ TARGET_HEIGHT="${TARGET_HEIGHT:-480}"
 MIN_CLIPS="${MIN_CLIPS:-2}"
 
 # [可选] merge/crop/resize 的 CPU 并行数。每个 movie worker 都会用这个值，别设太夸张。
-MERGE_JOBS="${MERGE_JOBS:-4}"
+MERGE_JOBS="${MERGE_JOBS:-8}"
 
 # =========================
 # 断点续跑、覆盖、清理参数
@@ -204,6 +219,10 @@ cmd=(
   --work-root "${WORK_ROOT}"
   --final-root "${FINAL_ROOT}"
   --model-cache-dir "${MODEL_CACHE_DIR}"
+  --sample-builder "${SAMPLE_BUILDER}"
+  --fixed-sample-latent-frames "${FIXED_SAMPLE_LATENT_FRAMES}"
+  --fixed-sample-min-shots "${FIXED_SAMPLE_MIN_SHOTS}"
+  --fixed-sample-max-shots "${FIXED_SAMPLE_MAX_SHOTS}"
   --pipeline-dir "${SCRIPT_DIR}"
   --python "${PYTHON_BIN}"
   --sevenzip "${SEVENZIP_BIN}"
@@ -223,6 +242,10 @@ cmd=(
 
 if [[ -n "${HF_TOKEN:-}" ]]; then
   cmd+=(--hf-token "${HF_TOKEN}")
+fi
+
+if [[ -n "${REUSE_WORK_ROOT:-}" ]]; then
+  cmd+=(--source-work-root "${REUSE_WORK_ROOT}")
 fi
 
 if [[ -n "${SCENE_WORKERS:-}" ]]; then

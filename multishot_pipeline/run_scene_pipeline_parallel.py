@@ -15,6 +15,7 @@ from build_multishot_samples import (
     select_samples_for_scene,
     write_merged_video,
 )
+from build_fixed_latent_samples import generate_fixed_latent_candidates_for_scene
 from character_cluster import (
     FACENET_IMPORT_ERROR,
     InceptionResnetV1,
@@ -89,6 +90,7 @@ def build_scene_jobs(args: argparse.Namespace) -> List[Dict]:
     scene_json = Path(args.scene_json)
     moviebench_root = Path(args.moviebench_root)
     work_root = Path(args.work_root)
+    source_work_root = Path(args.source_work_root) if args.source_work_root else work_root
     data = read_json(scene_json)
     only = set(args.only_movie or [])
     movie_items = list(data.items())
@@ -115,6 +117,7 @@ def build_scene_jobs(args: argparse.Namespace) -> List[Dict]:
                     "clip_names": list(clip_names),
                     "moviebench_root": str(moviebench_root),
                     "work_root": str(work_root),
+                    "source_work_root": str(source_work_root),
                     "args": args,
                 }
             )
@@ -377,25 +380,39 @@ def build_samples_for_scene(
 
     character_shots = [row for row in shot_records if not is_empty_shot(row)]
     empty_shots = [row for row in shot_records if is_empty_shot(row)]
-    candidates = generate_candidates_for_scene(
-        scene_shots=character_shots,
-        min_shots=args.min_shots,
-        max_shots=args.max_shots,
-        max_gap_shots=args.max_gap_shots,
-        min_conf=args.min_character_confidence,
-        min_score=args.min_score,
-        strategy=args.candidate_strategy,
-        max_candidates=args.max_candidate_pool,
-        max_candidate_combinations=args.max_candidate_combinations,
-    )
+    if args.sample_builder == "fixed-latent":
+        candidates = generate_fixed_latent_candidates_for_scene(
+            scene_shots=character_shots,
+            min_shots=args.fixed_sample_min_shots,
+            max_shots=args.fixed_sample_max_shots,
+            latent_frames=args.fixed_sample_latent_frames,
+            max_gap_shots=args.max_gap_shots,
+            min_conf=args.min_character_confidence,
+            min_score=args.min_score,
+            strategy=args.candidate_strategy,
+            max_candidates=args.max_candidate_pool,
+            max_candidate_combinations=args.max_candidate_combinations,
+        )
+    else:
+        candidates = generate_candidates_for_scene(
+            scene_shots=character_shots,
+            min_shots=args.min_shots,
+            max_shots=args.max_shots,
+            max_gap_shots=args.max_gap_shots,
+            min_conf=args.min_character_confidence,
+            min_score=args.min_score,
+            strategy=args.candidate_strategy,
+            max_candidates=args.max_candidate_pool,
+            max_candidate_combinations=args.max_candidate_combinations,
+        )
     rng = random.Random(args.seed + int(stable_id(movie_id, scene_id, length=8), 16))
     selected = select_samples_for_scene(
         candidates=candidates,
-        empty_shots=empty_shots,
+        empty_shots=[] if args.sample_builder == "fixed-latent" else empty_shots,
         max_samples=args.max_samples_per_scene,
         random_pool_size=args.random_selection_pool_size,
-        empty_shot_probability=args.empty_shot_probability,
-        max_shots=args.max_shots,
+        empty_shot_probability=0.0 if args.sample_builder == "fixed-latent" else args.empty_shot_probability,
+        max_shots=args.fixed_sample_max_shots if args.sample_builder == "fixed-latent" else args.max_shots,
         rng=rng,
     )
     rows = []
@@ -651,13 +668,14 @@ def process(args: argparse.Namespace) -> None:
                     )
     else:
         require_split = "character" in selected_stage_set
+        read_work_root = Path(args.source_work_root) if args.source_work_root else work_root
         print(
             f"[stage 1/3] split skipped; loading existing split rows "
-            f"require={int(require_split)}",
+            f"require={int(require_split)} root={read_work_root}",
             flush=True,
         )
         split_results = {
-            job["job_index"]: load_split_result_from_disk(job, work_root, require_split)
+            job["job_index"]: load_split_result_from_disk(job, read_work_root, require_split)
             for job in jobs
         }
 
@@ -750,15 +768,16 @@ def process(args: argparse.Namespace) -> None:
                         )
     else:
         require_character = "sample" in selected_stage_set
+        read_work_root = Path(args.source_work_root) if args.source_work_root else work_root
         print(
             f"[stage 2/3] character skipped; loading existing character rows "
-            f"require={int(require_character)}",
+            f"require={int(require_character)} root={read_work_root}",
             flush=True,
         )
         character_results = {
             job["job_index"]: load_character_result_from_disk(
                 job,
-                work_root,
+                read_work_root,
                 require_character,
             )
             for job in jobs
@@ -891,6 +910,11 @@ def process(args: argparse.Namespace) -> None:
         "character_worker_count": character_workers,
         "sample_worker_count": sample_workers,
         "sample_count": sample_count,
+        "sample_builder": args.sample_builder,
+        "fixed_sample_latent_frames": args.fixed_sample_latent_frames,
+        "fixed_sample_min_shots": args.fixed_sample_min_shots,
+        "fixed_sample_max_shots": args.fixed_sample_max_shots,
+        "source_work_root": args.source_work_root,
         "write_videos": args.write_videos,
         "empty_shot_probability": args.empty_shot_probability,
         "seed": args.seed,
@@ -914,6 +938,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--scene-json", default=r"movies_scenes.json")
     parser.add_argument("--moviebench-root", default=r"moviedataset")
     parser.add_argument("--work-root", default=r"H:\dataset\movie_multishot_output")
+    parser.add_argument(
+        "--source-work-root",
+        default=None,
+        help=(
+            "Optional existing work root to read skipped split/character stages from. "
+            "Outputs are still written to --work-root."
+        ),
+    )
     parser.add_argument("--only-movie", action="append", default=[])
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--reverse", action="store_true")
@@ -996,6 +1028,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-character-confidence", type=float, default=0.1)
     parser.add_argument("--min-score", type=float, default=0.1)
     parser.add_argument("--max-samples-per-scene", type=int, default=8)
+    parser.add_argument(
+        "--sample-builder",
+        choices=["default", "fixed-latent"],
+        default="default",
+        help="Sample generation policy.",
+    )
+    parser.add_argument("--fixed-sample-latent-frames", type=int, default=22)
+    parser.add_argument("--fixed-sample-min-shots", type=int, default=2)
+    parser.add_argument("--fixed-sample-max-shots", type=int, default=3)
     parser.add_argument(
         "--random-selection-pool-size",
         type=int,

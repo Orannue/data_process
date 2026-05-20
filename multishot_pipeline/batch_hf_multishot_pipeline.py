@@ -445,6 +445,10 @@ def movie_work_root(args: argparse.Namespace, movie_id: str) -> Path:
     return args.work_root / "movies" / movie_id
 
 
+def movie_work_root_for_root(work_root: Path, movie_id: str) -> Path:
+    return work_root / "movies" / movie_id
+
+
 def movie_merge_output_root(
     args: argparse.Namespace, movie_id: str, movie_work: Optional[Path] = None
 ) -> Path:
@@ -712,7 +716,27 @@ def build_pipeline_cmd(
         str(workers),
         "--stages",
         args.pipeline_stages,
+        "--sample-builder",
+        args.sample_builder,
     ]
+    if args.source_work_root:
+        cmd.extend(
+            [
+                "--source-work-root",
+                str(movie_work_root_for_root(args.source_work_root, movie_id)),
+            ]
+        )
+    if args.sample_builder == "fixed-latent":
+        cmd.extend(
+            [
+                "--fixed-sample-latent-frames",
+                str(args.fixed_sample_latent_frames),
+                "--fixed-sample-min-shots",
+                str(args.fixed_sample_min_shots),
+                "--fixed-sample-max-shots",
+                str(args.fixed_sample_max_shots),
+            ]
+        )
     if args.split_workers is not None:
         cmd.extend(["--split-workers", str(args.split_workers)])
     if args.character_workers is not None:
@@ -796,6 +820,8 @@ def process_movie(
         "sample_workers": args.sample_workers,
         "pipeline_stages": args.pipeline_stage_names,
         "post_stages": args.post_stage_names,
+        "sample_builder": args.sample_builder,
+        "source_work_root": str(args.source_work_root) if args.source_work_root else None,
         "started_at": started_at,
     }
     write_movie_marker(movie_work, {**marker_base, "status": "running"})
@@ -956,6 +982,7 @@ def main() -> int:
     args.final_root = args.final_root.resolve()
     args.pipeline_dir = args.pipeline_dir.resolve()
     args.model_cache_dir = args.model_cache_dir.resolve() if args.model_cache_dir else None
+    args.source_work_root = args.source_work_root.resolve() if args.source_work_root else None
     args.pipeline_stage_names = parse_stage_names(args.pipeline_stages)
     args.pipeline_stages = ",".join(args.pipeline_stage_names) if args.pipeline_stage_names else "none"
     args.post_stage_names = resolve_post_stage_names(
@@ -984,6 +1011,7 @@ def main() -> int:
             f"movie_workers={args.movie_workers}, scene_workers={default_workers}, "
             f"pipeline_stages={args.pipeline_stages}, "
             f"post_stages={args.post_stages}, "
+            f"sample_builder={args.sample_builder}, "
             f"split_workers={args.split_workers}, "
             f"character_workers={args.character_workers}, "
             f"sample_workers={args.sample_workers}, "
@@ -995,6 +1023,7 @@ def main() -> int:
             f"movie_workers={args.movie_workers}, scene_workers={args.scene_workers}, "
             f"pipeline_stages={args.pipeline_stages}, "
             f"post_stages={args.post_stages}, "
+            f"sample_builder={args.sample_builder}, "
             f"split_workers={args.split_workers}, "
             f"character_workers={args.character_workers}, "
             f"sample_workers={args.sample_workers}, "
@@ -1079,6 +1108,7 @@ def main() -> int:
                 f"scene_workers={scene_workers_for_group(args, group)} "
                 f"pipeline_stages={args.pipeline_stages} "
                 f"post_stages={args.post_stages} "
+                f"sample_builder={args.sample_builder} "
                 f"split_workers={args.split_workers} "
                 f"character_workers={args.character_workers} "
                 f"sample_workers={args.sample_workers}"
@@ -1281,6 +1311,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--final-root", type=Path, required=True)
     parser.add_argument("--state-file", type=Path, default=None)
     parser.add_argument(
+        "--source-work-root",
+        type=Path,
+        default=None,
+        help=(
+            "Existing batch work root to reuse skipped split/character outputs from "
+            "while writing new samples/crops/merges under --work-root."
+        ),
+    )
+    parser.add_argument(
         "--model-cache-dir",
         type=Path,
         default=Path.cwd() / "model_cache",
@@ -1363,6 +1402,15 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument("--write-videos", action="store_true")
+    parser.add_argument(
+        "--sample-builder",
+        choices=["default", "fixed-latent"],
+        default="default",
+        help="Sample generation policy passed to run_scene_pipeline_parallel.py.",
+    )
+    parser.add_argument("--fixed-sample-latent-frames", type=int, default=22)
+    parser.add_argument("--fixed-sample-min-shots", type=int, default=2)
+    parser.add_argument("--fixed-sample-max-shots", type=int, default=3)
     parser.add_argument(
         "--pipeline-stages",
         default="split,character,sample",
