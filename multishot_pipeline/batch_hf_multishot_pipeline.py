@@ -7,6 +7,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import threading
@@ -693,6 +694,59 @@ def write_movie_marker(movie_work: Path, data: Dict[str, Any]) -> None:
     write_json(movie_work / "_movie_pipeline_status.json", data)
 
 
+def remove_dir_if_safe(path: Path, allowed_root: Path) -> bool:
+    if not path.exists():
+        return False
+    resolved_path = path.resolve()
+    resolved_root = allowed_root.resolve()
+    if resolved_path == resolved_root:
+        raise RuntimeError(f"Refusing to remove root directory: {resolved_path}")
+    try:
+        resolved_path.relative_to(resolved_root)
+    except ValueError as exc:
+        raise RuntimeError(
+            f"Refusing to remove directory outside allowed root: {resolved_path}"
+        ) from exc
+    shutil.rmtree(resolved_path)
+    return True
+
+
+def cleanup_overwrite_outputs(
+    args: argparse.Namespace,
+    movie_id: str,
+    movie_work: Path,
+    merge_output_root: Path,
+) -> List[str]:
+    if not args.overwrite:
+        return []
+
+    removed: List[str] = []
+    if "sample" in args.pipeline_stage_names:
+        for path in [
+            movie_work / "samples",
+            movie_work / "cropped_samples",
+            movie_work / "_stage_status" / "sample",
+        ]:
+            if remove_dir_if_safe(path, movie_work):
+                removed.append(str(path))
+        if not args.merge_in_place:
+            final_movie_dir = merge_output_root / movie_id
+            if remove_dir_if_safe(final_movie_dir, merge_output_root):
+                removed.append(str(final_movie_dir))
+        return removed
+
+    if "crop" in args.post_stage_names:
+        path = movie_work / "cropped_samples"
+        if remove_dir_if_safe(path, movie_work):
+            removed.append(str(path))
+        if not args.merge_in_place:
+            final_movie_dir = merge_output_root / movie_id
+            if remove_dir_if_safe(final_movie_dir, merge_output_root):
+                removed.append(str(final_movie_dir))
+
+    return removed
+
+
 def build_pipeline_cmd(
     args: argparse.Namespace,
     movie_id: str,
@@ -827,6 +881,15 @@ def process_movie(
     write_movie_marker(movie_work, {**marker_base, "status": "running"})
 
     try:
+        removed_paths = cleanup_overwrite_outputs(
+            args=args,
+            movie_id=movie_id,
+            movie_work=movie_work,
+            merge_output_root=merge_output_root,
+        )
+        for path in removed_paths:
+            log(f"[overwrite clean] {movie_id}: removed {path}")
+
         if args.pipeline_stage_names:
             run_logged(
                 build_pipeline_cmd(args, movie_id, moviebench_root, movie_work, device_group),

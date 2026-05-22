@@ -9,7 +9,7 @@ set -euo pipefail
 # [必填] Hugging Face 数据集仓库 ID。当前就是你的 raw data 仓库。
 REPO_ID="Orannue/moviedataset"
 
-# [可选] Hugging Face 仓库版本、分支或 commit。通常保持 main。
+# [可选] Hugging Face 仓库版本、分支或 commit。通常保持 main。 
 REVISION="main"
 
 # [可选] Hugging Face token。不要写死在脚本里；需要权限时先 export HF_TOKEN="你的token"。
