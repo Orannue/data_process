@@ -1,4 +1,5 @@
 import argparse
+import shutil
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -101,6 +102,20 @@ def latent_count_for_blocks(blocks: int, is_first: bool) -> int:
     return 3 * blocks + 1 if is_first else 3 * blocks
 
 
+def fixed_latent_target_for_sample(sample: Dict) -> Optional[int]:
+    value = sample.get("fixed_latent_frames")
+    if value is None:
+        rule = sample.get("latent_rule")
+        if isinstance(rule, dict):
+            value = rule.get("total_latent_frames")
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def center_crop_range(frame_count: int, target_frames: int) -> Tuple[int, int]:
     start = max(0, (frame_count - target_frames) // 2)
     end = start + target_frames - 1
@@ -160,7 +175,14 @@ def build_crop_plan(sample: Dict, max_latent_frames: int) -> Optional[Dict]:
         info["max_blocks"] = max_blocks_for_shot(info["frame_count"], idx == 0)
         infos.append(info)
 
-    block_budget = (int(max_latent_frames) - 1) // 3
+    fixed_latent_target = fixed_latent_target_for_sample(sample)
+    target_latent_frames = fixed_latent_target or int(max_latent_frames)
+    if target_latent_frames < 4 or (target_latent_frames - 1) % 3 != 0:
+        return None
+    if target_latent_frames > int(max_latent_frames):
+        return None
+
+    block_budget = (target_latent_frames - 1) // 3
     blocks = distribute_blocks([info["max_blocks"] for info in infos], block_budget)
     if blocks is None:
         return None
@@ -197,6 +219,8 @@ def build_crop_plan(sample: Dict, max_latent_frames: int) -> Optional[Dict]:
             }
         )
 
+    if fixed_latent_target is not None and total_latent_frames != fixed_latent_target:
+        return None
     if total_latent_frames > max_latent_frames:
         return None
 
@@ -211,6 +235,22 @@ def build_crop_plan(sample: Dict, max_latent_frames: int) -> Optional[Dict]:
 
 def output_sample_dir(output_root: Path, sample: Dict) -> Path:
     return output_root / sample["movie_id"] / sample["scene_id"] / sample["sample_id"]
+
+
+def remove_existing_sample_dir(sample_dir: Path, output_root: Path) -> None:
+    if not sample_dir.exists():
+        return
+    resolved_sample = sample_dir.resolve()
+    resolved_root = output_root.resolve()
+    if resolved_sample == resolved_root:
+        raise RuntimeError(f"Refusing to remove output root: {resolved_sample}")
+    try:
+        resolved_sample.relative_to(resolved_root)
+    except ValueError as exc:
+        raise RuntimeError(
+            f"Refusing to remove sample directory outside output root: {resolved_sample}"
+        ) from exc
+    shutil.rmtree(resolved_sample)
 
 
 def process_sample(sample: Dict, args: argparse.Namespace, output_root: Path) -> Optional[Dict]:
@@ -230,6 +270,9 @@ def process_sample(sample: Dict, args: argparse.Namespace, output_root: Path) ->
             "total_latent_frames": plan["total_latent_frames"],
             "skipped_existing": True,
         }
+
+    if sample_dir.exists() and args.overwrite:
+        remove_existing_sample_dir(sample_dir, output_root)
 
     written_paths = []
     for idx, crop in enumerate(plan["crop_ranges"], start=1):
