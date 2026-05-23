@@ -124,34 +124,34 @@ MERGE_JOBS="${MERGE_JOBS:-8}"
 # =========================
 
 # [建议保持默认] 本地已有 .7z 时跳过下载，避免重复下载。
-SKIP_EXISTING_DOWNLOADS=1
+SKIP_EXISTING_DOWNLOADS="${SKIP_EXISTING_DOWNLOADS:-1}"
 
 # [可选] 强制重新下载 .7z。通常保持 0。
-FORCE_DOWNLOAD=0
+FORCE_DOWNLOAD="${FORCE_DOWNLOAD:-0}"
 
 # [可选] 跳过下载阶段。已有本地压缩包或已解压时可设 1。
-SKIP_DOWNLOAD=0
+SKIP_DOWNLOAD="${SKIP_DOWNLOAD:-0}"
 
 # [可选] 跳过解压阶段。EXTRACT_ROOT 已经准备好时可设 1。
-SKIP_EXTRACT=0
+SKIP_EXTRACT="${SKIP_EXTRACT:-0}"
 
 # [可选] 跳过处理阶段。只想下载和解压时设 1。
-SKIP_PROCESS=0
+SKIP_PROCESS="${SKIP_PROCESS:-0}"
 
 # [建议保持默认] 每个 archive 解压到独立子目录，避免不同压缩包文件名互相覆盖。
-EXTRACT_PER_ARCHIVE=1
+EXTRACT_PER_ARCHIVE="${EXTRACT_PER_ARCHIVE:-1}"
 
 # [建议保持默认] 解压成功后自动删除本地 .7z，节省磁盘空间。
-DELETE_ARCHIVE_AFTER_EXTRACT=1
+DELETE_ARCHIVE_AFTER_EXTRACT="${DELETE_ARCHIVE_AFTER_EXTRACT:-1}"
 
 # [可选] 重新解压并覆盖已有解压 marker。通常保持 0。
-OVERWRITE_EXTRACT=0
+OVERWRITE_EXTRACT="${OVERWRITE_EXTRACT:-0}"
 
 # [可选] 覆盖已处理电影的输出。通常保持 0；需要全量重跑时设 1。
-OVERWRITE_OUTPUTS=0
+OVERWRITE_OUTPUTS="${OVERWRITE_OUTPUTS:-0}"
 
 # [可选] 重新跑之前失败的电影。修复依赖或参数后建议保持 1。
-RETRY_FAILED=1
+RETRY_FAILED="${RETRY_FAILED:-1}"
 
 # =========================
 # 小规模测试参数
